@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.kevin.TexasTechWeatherApp">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ttu_icon"
+        android:label="TTU Weather"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Add_Location"
+            android:theme="@style/AppTheme1"
+            android:parentActivityName=".MainActivity"
+            >
+        </activity>
+        <activity
+            android:name=".NewPage"
+            android:parentActivityName=".MainActivity"
+            >
+        </activity>
+
+        <activity
+            android:name=".Settings"
+            android:parentActivityName=".MainActivity"
+            >
+        </activity>
+
+    </application>
+
+</manifest>

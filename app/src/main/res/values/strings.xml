@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Texas Tech Weather App</string>
+    <string name="temperature">Temperature</string>
+    <string name="condition">Condition</string>
+    <string name="location">Location</string>
+    <string name="PREF_NAME">LocationStorage</string>
+    <string name="Location_Number">Location_Number</string>
+</resources>
