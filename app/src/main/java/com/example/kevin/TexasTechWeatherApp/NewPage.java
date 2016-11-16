@@ -62,7 +62,6 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
         int i = location_number.getInt("location_number", 0);
         String locationCheck = location_name.getString("location_name" + i, "Lubbock, TX");
         service.refreshWeather(locationCheck);
-        Toast.makeText(this,getString(R.string.pref_temperature_unit),Toast.LENGTH_SHORT).show();
 
     }
 
