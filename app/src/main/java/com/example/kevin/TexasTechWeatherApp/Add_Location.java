@@ -56,4 +56,19 @@ public class Add_Location extends AppCompatActivity{
             }
         });
     }
+
+    //if back  button is pressed go back to main page and reset page location
+    @Override
+    public void onBackPressed()
+    {
+
+        SharedPreferences loc_number = getSharedPreferences(getString(R.string.Location_Number), 0);
+        int i= loc_number.getInt("location_number",0);
+        SharedPreferences.Editor editor = loc_number.edit();
+        editor.putInt("location_number", 0);//put 0 in for page location
+        editor.commit();
+        Intent intent= new Intent(this,MainActivity.class);
+        startActivity(intent);
+    }
+
 }

@@ -11,18 +11,19 @@ import android.view.GestureDetector.OnGestureListener;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.Menu;
 
 import com.example.kevin.TexasTechWeatherApp.data.Channel;
+import com.example.kevin.TexasTechWeatherApp.data.Condition;
 import com.example.kevin.TexasTechWeatherApp.data.Item;
 import com.example.kevin.TexasTechWeatherApp.service.WeatherServiceCallback;
 import com.example.kevin.TexasTechWeatherApp.service.YahooWeatherService;
 
 public class MainActivity extends AppCompatActivity implements WeatherServiceCallback,OnGestureListener{
 
-    private ImageView weatherIconImageView;
     private TextView temperatureTextView;
     private TextView conditionTextView;
     private TextView locationTextView;
@@ -40,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ttu_icon);
         detector = new GestureDetector(this,this);
-        weatherIconImageView = (ImageView) findViewById(R.id.weatherIconImageView);
         temperatureTextView = (TextView) findViewById(R.id.temperatureTextView);
         conditionTextView = (TextView) findViewById(R.id.conditionTextView);
         locationTextView = (TextView) findViewById(R.id.locationTextView);
@@ -83,12 +83,18 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
         dialog.hide();
 
         Item item = channel.getItem();
-        int resourceId = getResources().getIdentifier("drawable/icon_" + item.getCondition().getCode(), null, getPackageName());
+        String str = "drawable/ttu_main";
 
-        @SuppressWarnings("deprecation")
-        Drawable weatherIconDrawable = getResources().getDrawable(resourceId);
+        int backimageId = getResources().getIdentifier(str, null, getPackageName());
 
-        weatherIconImageView.setImageDrawable(weatherIconDrawable);
+
+        //check what type of weather condition it is
+        //apply new image
+        RelativeLayout image= (RelativeLayout)findViewById(R.id.activity_main);
+
+        //for getting which image to set
+        image.setBackgroundResource(backimageId);//default image
+
         temperatureTextView.setText(item.getCondition().getTemperature() + "\u00B0" + channel.getUnits().getTemperature());
         conditionTextView.setText(item.getCondition().getDescription());
         locationTextView.setText(service.getLocation());
@@ -125,6 +131,12 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
         return false;
     }
 
+    //no use for the back button in our main page
+    @Override
+    public void onBackPressed()
+    {
+    }
+
     @Override
     public void onLongPress(MotionEvent e) {
 
@@ -142,17 +154,17 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
                         /*don't need swipe right gesture action on main activity//
                         Toast.makeText(this, "You have swiped right", Toast.LENGTH_SHORT).show();*/
                     } else {//on swipe left
-                        SharedPreferences loc_number = getSharedPreferences(getString(R.string.Location_Number), 0);
-                        SharedPreferences loc_name = getSharedPreferences(getString(R.string.PREF_NAME),0);
+                        SharedPreferences loc_number = getSharedPreferences(getString(R.string.Location_Number), 0);//get loc_number and use operating mode 0
+                        SharedPreferences loc_name = getSharedPreferences(getString(R.string.PREF_NAME),0);//get location name and use operating mode 0
                         SharedPreferences.Editor editor = loc_number.edit();
-                        String str= loc_name.getString("location_name1",null);
+                        String str= loc_name.getString("location_name1",null);//for second location
                         int i=loc_number.getInt("location_number",0);
                         if(i<=0){//if been no locations or back to main page
                             i=0;
                             editor.putInt("location_numbers", i);
                             editor.commit();
                             if(str != null) {//if have locations go to new page
-                                i = 1;
+                                i = 1;//position assigned to second page
                                 editor.putInt("location_number", i);
                                 editor.commit();
                                 Intent intent =new Intent(MainActivity.this,NewPage.class);

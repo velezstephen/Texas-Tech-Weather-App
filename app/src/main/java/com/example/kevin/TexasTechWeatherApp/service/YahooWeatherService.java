@@ -1,8 +1,11 @@
 package com.example.kevin.TexasTechWeatherApp.service;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 
+import com.example.kevin.TexasTechWeatherApp.R;
 import com.example.kevin.TexasTechWeatherApp.data.Channel;
 
 import org.json.JSONException;
@@ -22,6 +25,7 @@ public class YahooWeatherService {
     private WeatherServiceCallback callback;
     private String location;
     private Exception error;
+    public static SharedPreferences preferences;
 
     public YahooWeatherService(WeatherServiceCallback callback) {
         this.callback = callback;
@@ -31,6 +35,7 @@ public class YahooWeatherService {
         return location;
     }
 
+
     public void refreshWeather(String l) {
 
         this.location = l;
@@ -38,8 +43,6 @@ public class YahooWeatherService {
         new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... strings) {
-
-
                 String YQL = String.format("select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\") and u='F'", strings[0]);
                 String endpoint = String.format("http://query.yahooapis.com/v1/public/yql?q=%s&format=json", Uri.encode(YQL));
 

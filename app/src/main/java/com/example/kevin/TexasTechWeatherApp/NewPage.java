@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +30,6 @@ import com.example.kevin.TexasTechWeatherApp.service.YahooWeatherService;
 
 public class NewPage extends AppCompatActivity implements WeatherServiceCallback,OnGestureListener{
 
-    private ImageView weatherIconImageView;
     private TextView temperatureTextView;
     private TextView conditionTextView;
     private TextView locationTextView;
@@ -44,43 +44,26 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_page);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ttu_icon);
-        detector = new GestureDetector(this,this);
-        weatherIconImageView = (ImageView) findViewById(R.id.weatherIconImageView);
+        detector = new GestureDetector(this, this);
         temperatureTextView = (TextView) findViewById(R.id.temperatureTextView);
         conditionTextView = (TextView) findViewById(R.id.conditionTextView);
         locationTextView = (TextView) findViewById(R.id.locationTextView);
 
 
-        SharedPreferences location_number=getSharedPreferences(getString(R.string.Location_Number),0);
-        SharedPreferences location_name=getSharedPreferences(getString(R.string.PREF_NAME),0);
+        SharedPreferences location_number = getSharedPreferences(getString(R.string.Location_Number), 0);
+        SharedPreferences location_name = getSharedPreferences(getString(R.string.PREF_NAME), 0);
 
         service = new YahooWeatherService(this);
         dialog = new ProgressDialog(this);
         dialog.setMessage("Loading...");
         dialog.show();
 
-        int i= location_number.getInt("location_number",0);
-        String locationCheck=location_name.getString("location_name"+i,"Lubbock, TX");
+        int i = location_number.getInt("location_number", 0);
+        String locationCheck = location_name.getString("location_name" + i, "Lubbock, TX");
+        service.refreshWeather(locationCheck);
+        Toast.makeText(this,getString(R.string.pref_temperature_unit),Toast.LENGTH_SHORT).show();
 
-        //if adding another lubbock page ignore it
-
-        if(locationCheck.equals("Lubbock, TX")||locationCheck.equals("Lubbock")||locationCheck.equals("Lubbock, Texas")){
-            SharedPreferences loc_number = getSharedPreferences(getString(R.string.Location_Number), 0);
-            i--;//go back to previoucs location if trying to add lubbock again
-            //increase location position
-            SharedPreferences.Editor editor = loc_number.edit();
-            editor.putInt("location_number", i);
-            editor.commit();
-            Intent intent = new Intent(NewPage.this,NewPage.class);
-            startActivity(intent);
-            Toast.makeText(NewPage.this,"Feel free to add a location",Toast.LENGTH_SHORT).show();
-
-        }
-        else{
-            service.refreshWeather(locationCheck);
-        }
     }
 
     @Override
@@ -109,11 +92,17 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
             dialog.hide();
 
             Item item = channel.getItem();
-            int resourceId = getResources().getIdentifier("drawable/icon_" + item.getCondition().getCode(), null, getPackageName());
-            @SuppressWarnings("deprecation")
-            Drawable weatherIconDrawable = getResources().getDrawable(resourceId);
+            String str = "drawable/back_image";
 
-            weatherIconImageView.setImageDrawable(weatherIconDrawable);
+            int backimageId = getResources().getIdentifier(str + item.getCondition().getCode(), null, getPackageName());
+
+            //check what type of weather condition it is
+            //apply new image
+            RelativeLayout image= (RelativeLayout)findViewById(R.id.new_page);
+            //for getting which image to set
+            image.setBackgroundResource(backimageId);
+
+
             temperatureTextView.setText(item.getCondition().getTemperature() + "\u00B0" + channel.getUnits().getTemperature());
             conditionTextView.setText(item.getCondition().getDescription());
             locationTextView.setText(service.getLocation());
@@ -137,6 +126,19 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
     @Override
     public void onShowPress(MotionEvent e) {
 
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        //This method is called when the up button is pressed. Just the pop back stack.
+        Intent intent= new Intent(this, MainActivity.class);
+        startActivity(intent);
+        return true;
+    }
+
+    @Override//no use for back button on any new pages
+    public void onBackPressed()
+    {
     }
 
     @Override
@@ -171,6 +173,9 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
                         editor.putInt("location_number", i);
                         editor.commit();
                         if (i == 0) {//if going back to main activity page
+                            //reset page location to 0
+                            editor.putInt("location_number", 0);//put 0 in for page location
+                            editor.commit();
                             Intent intent = new Intent(NewPage.this, MainActivity.class);
                             startActivity(intent);
                         } else {//go to new page activity

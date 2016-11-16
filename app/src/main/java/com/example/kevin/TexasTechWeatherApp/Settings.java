@@ -6,6 +6,7 @@
 
 package com.example.kevin.TexasTechWeatherApp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -102,6 +103,14 @@ public class Settings extends PreferenceActivity {
             setTitle("Settings");
         }
         return delegate;
+    }
+
+    //if back button pressed go back to main page automatically
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent= new Intent(this,MainActivity.class);
+        startActivity(intent);
     }
 }
 

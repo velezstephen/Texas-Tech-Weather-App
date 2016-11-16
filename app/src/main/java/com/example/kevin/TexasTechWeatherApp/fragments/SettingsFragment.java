@@ -54,7 +54,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 clearLocations();
-                Intent intent= new Intent(getContext(),MainActivity.class);
+                Intent intent= new Intent(getActivity().getApplicationContext(),MainActivity.class);
                 startActivity(intent);
                 return true;
             }
@@ -70,6 +70,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
         onSharedPreferenceChanged(null, null);
 
+        //not necessary at this moment but may use it to set geolocation for first time
         if(!preferences.getBoolean(getString(R.string.pref_needs_setup), false)) {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean(getString(R.string.pref_needs_setup), false);
@@ -81,8 +82,8 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
     //clear cache funtion
     public void clearLocations(){
-        SharedPreferences loc_number = getContext().getSharedPreferences(getString(R.string.Location_Number),0);
-        SharedPreferences loc_name= getContext().getSharedPreferences(getString(R.string.PREF_NAME),0);
+        SharedPreferences loc_number = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.Location_Number),0);
+        SharedPreferences loc_name= getActivity().getApplicationContext().getSharedPreferences(getString(R.string.PREF_NAME),0);
         SharedPreferences.Editor editor = loc_number.edit();
         editor.clear();
         editor.commit();
@@ -95,7 +96,8 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            startActivity(new Intent(getActivity(), MainActivity.class));
+            Intent intent=new Intent(getActivity().getApplicationContext(), MainActivity.class);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -123,8 +125,6 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
             preference.setSummary(index >= 0 ? listPreference.getEntries()[index] : null);
 
-        } else if (preference instanceof EditTextPreference) {
-            preference.setSummary(stringValue);
         }
 
         return true;
