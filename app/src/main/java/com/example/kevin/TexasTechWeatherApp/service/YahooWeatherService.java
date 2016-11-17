@@ -1,11 +1,10 @@
 package com.example.kevin.TexasTechWeatherApp.service;
 
-import android.content.Context;
+
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 
-import com.example.kevin.TexasTechWeatherApp.R;
 import com.example.kevin.TexasTechWeatherApp.data.Channel;
 
 import org.json.JSONException;
@@ -25,7 +24,6 @@ public class YahooWeatherService {
     private WeatherServiceCallback callback;
     private String location;
     private Exception error;
-    public static SharedPreferences preferences;
 
     public YahooWeatherService(WeatherServiceCallback callback) {
         this.callback = callback;

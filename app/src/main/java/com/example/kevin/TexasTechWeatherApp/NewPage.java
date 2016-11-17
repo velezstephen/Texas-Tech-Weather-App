@@ -3,22 +3,19 @@ package com.example.kevin.TexasTechWeatherApp;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kevin.TexasTechWeatherApp.data.Channel;
-import com.example.kevin.TexasTechWeatherApp.data.Condition;
 import com.example.kevin.TexasTechWeatherApp.data.Item;
 import com.example.kevin.TexasTechWeatherApp.service.WeatherServiceCallback;
 import com.example.kevin.TexasTechWeatherApp.service.YahooWeatherService;
@@ -39,6 +36,8 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
 
     private YahooWeatherService service;
     private ProgressDialog dialog;
+
+    public static SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,14 +94,27 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
 
             int backimageId = getResources().getIdentifier(str + item.getCondition().getCode(), null, getPackageName());
 
+            //for getting temperature unit string value
+            preferences= PreferenceManager.getDefaultSharedPreferences(this);
+            String preftemp= preferences.getString("temperature_unit","Null");
+
             //check what type of weather condition it is
             //apply new image
             RelativeLayout image= (RelativeLayout)findViewById(R.id.new_page);
             //for getting which image to set
             image.setBackgroundResource(backimageId);
 
+            int temperature=item.getCondition().getTemperature();
 
-            temperatureTextView.setText(item.getCondition().getTemperature() + "\u00B0" + channel.getUnits().getTemperature());
+            //checks to see if temperature unit value is C and gets new temp for Celsius
+            if( preftemp.equals("C")){
+                int newtemp=FarenheitToCelsius(temperature);
+                temperatureTextView.setText(newtemp + "\u00B0" + "C"); //Already known to be celsius
+            }
+
+            else{
+                temperatureTextView.setText(temperature + "\u00B0" + channel.getUnits().getTemperature());
+            }
             conditionTextView.setText(item.getCondition().getDescription());
             locationTextView.setText(service.getLocation());
         }
@@ -133,6 +145,11 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
         Intent intent= new Intent(this, MainActivity.class);
         startActivity(intent);
         return true;
+    }
+
+    // Converts From Farenheit to Celsius
+    private int FarenheitToCelsius(int fahrenheit) {
+        return ((fahrenheit - 32) * 5 / 9);
     }
 
     @Override//no use for back button on any new pages

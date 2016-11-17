@@ -3,7 +3,7 @@
     <string name="pref_geolocation_enabled">geolocation_enabled</string>
     <string name="pref_temperature_unit">temperature_unit</string>
     <string name="pref_needs_setup">needs_setup</string>
-    <string name="pref_default_unit">C</string>
+    <string name="pref_default_unit">F</string>
 
     <string name="pref_header_general">General</string>
     <string name="pref_title_enable_geolocation">Enable GeoLocation</string>

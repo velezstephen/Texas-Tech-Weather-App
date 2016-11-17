@@ -3,24 +3,25 @@ package com.example.kevin.TexasTechWeatherApp;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.ListPreference;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.Menu;
 
 import com.example.kevin.TexasTechWeatherApp.data.Channel;
-import com.example.kevin.TexasTechWeatherApp.data.Condition;
 import com.example.kevin.TexasTechWeatherApp.data.Item;
 import com.example.kevin.TexasTechWeatherApp.service.WeatherServiceCallback;
 import com.example.kevin.TexasTechWeatherApp.service.YahooWeatherService;
+
 
 public class MainActivity extends AppCompatActivity implements WeatherServiceCallback,OnGestureListener{
 
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
     private GestureDetector detector;
     private static final int SWIPE_THRESHOLD = 100;
     private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+    public static SharedPreferences preferences;
 
     private YahooWeatherService service;
     private ProgressDialog dialog;
@@ -44,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
         temperatureTextView = (TextView) findViewById(R.id.temperatureTextView);
         conditionTextView = (TextView) findViewById(R.id.conditionTextView);
         locationTextView = (TextView) findViewById(R.id.locationTextView);
+
 
 
         service = new YahooWeatherService(this);
@@ -87,15 +91,24 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
 
         int backimageId = getResources().getIdentifier(str, null, getPackageName());
 
-
-        //check what type of weather condition it is
-        //apply new image
+        //for getting temperature unit string value
+        preferences= PreferenceManager.getDefaultSharedPreferences(this);
+        String preftemp= preferences.getString("temperature_unit","Null");
+        //for getting which image to set and where
         RelativeLayout image= (RelativeLayout)findViewById(R.id.activity_main);
-
-        //for getting which image to set
         image.setBackgroundResource(backimageId);//default image
 
-        temperatureTextView.setText(item.getCondition().getTemperature() + "\u00B0" + channel.getUnits().getTemperature());
+        int temperature=item.getCondition().getTemperature();
+
+        //checks to see if temperature unit value is C and gets new temp for Celsius
+        if( preftemp.equals("C")){
+            int newtemp=FarenheitToCelsius(temperature);
+            temperatureTextView.setText(newtemp + "\u00B0" + "C"); //Already known to be celsius
+        }
+
+        else{
+        temperatureTextView.setText(temperature + "\u00B0" + channel.getUnits().getTemperature());
+        }
         conditionTextView.setText(item.getCondition().getDescription());
         locationTextView.setText(service.getLocation());
     }
@@ -141,6 +154,12 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
     public void onLongPress(MotionEvent e) {
 
     }
+
+    // Converts From Farenheit to Celsius
+    private int FarenheitToCelsius(int fahrenheit) {
+        return ((fahrenheit - 32) * 5 / 9);
+    }
+
     //The only one we need to use for swiping
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
