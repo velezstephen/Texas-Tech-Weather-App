@@ -95,6 +95,10 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
+            SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.Location_Number),0);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putInt("location_number",0);//reassign page location to 0
+            editor.apply();
             Intent intent=new Intent(getActivity().getApplicationContext(), MainActivity.class);
             startActivity(intent);
             return true;

@@ -6,4 +6,8 @@
     <string name="PREF_NAME">LocationStorage</string>
     <string name="Location_Number">Location_Number</string>
     <string name="temperature_output">%1$d&#176;%2$s</string>
+
+    <string name="Prev_Temp">Prev_Temp</string>
+    <string name="Prev_Code">Prev_Code</string>
+    <string name="Prev_Condition">Prev_Condition</string>
 </resources>

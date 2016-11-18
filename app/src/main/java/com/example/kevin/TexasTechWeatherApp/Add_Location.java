@@ -41,12 +41,12 @@ public class Add_Location extends AppCompatActivity{
                     i++;
                     SharedPreferences.Editor editor = loc_number.edit();
                     editor.putInt("location_number", i);
-                    editor.commit();
+                    editor.apply();
                     //local storage of each added location name
                     SharedPreferences locations = getSharedPreferences(getString(R.string.PREF_NAME), 0);
                     SharedPreferences.Editor editor1 = locations.edit();
                     editor1.putString("location_name"+i , str);
-                    editor1.commit();
+                    editor1.apply();
                     Intent newintent =new Intent(Add_Location.this, NewPage.class);
                     startActivity(newintent);
                 } else {
@@ -66,7 +66,7 @@ public class Add_Location extends AppCompatActivity{
         int i= loc_number.getInt("location_number",0);
         SharedPreferences.Editor editor = loc_number.edit();
         editor.putInt("location_number", 0);//put 0 in for page location
-        editor.commit();
+        editor.apply();
         Intent intent= new Intent(this,MainActivity.class);
         startActivity(intent);
     }

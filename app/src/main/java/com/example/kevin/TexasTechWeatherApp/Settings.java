@@ -109,8 +109,14 @@ public class Settings extends PreferenceActivity {
     @Override
     public void onBackPressed()
     {
+        SharedPreferences pref=getSharedPreferences(getString(R.string.Location_Number),0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("location_number",0);//reassign page location to 0
+        editor.apply();
         Intent intent= new Intent(this,MainActivity.class);
         startActivity(intent);
     }
+
+
 }
 
