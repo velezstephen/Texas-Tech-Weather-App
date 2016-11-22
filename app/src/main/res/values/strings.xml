@@ -10,4 +10,6 @@
     <string name="Prev_Temp">Prev_Temp</string>
     <string name="Prev_Code">Prev_Code</string>
     <string name="Prev_Condition">Prev_Condition</string>
+    <string name="GPS">GPS_Location</string>
+    <string name="GPS_Enabled">GPS_Enabled</string>
 </resources>

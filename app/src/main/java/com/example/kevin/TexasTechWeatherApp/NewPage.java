@@ -1,13 +1,26 @@
 package com.example.kevin.TexasTechWeatherApp;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -18,6 +31,9 @@ import android.widget.Toast;
 import com.example.kevin.TexasTechWeatherApp.data.Channel;
 import com.example.kevin.TexasTechWeatherApp.data.Condition;
 import com.example.kevin.TexasTechWeatherApp.data.Item;
+import com.example.kevin.TexasTechWeatherApp.data.LocationResult;
+import com.example.kevin.TexasTechWeatherApp.service.GPS;
+import com.example.kevin.TexasTechWeatherApp.service.GPSListener;
 import com.example.kevin.TexasTechWeatherApp.service.WeatherServiceCallback;
 import com.example.kevin.TexasTechWeatherApp.service.YahooWeatherService;
 
@@ -26,7 +42,7 @@ import com.example.kevin.TexasTechWeatherApp.service.YahooWeatherService;
  * For every added location page
  */
 
-public class NewPage extends AppCompatActivity implements WeatherServiceCallback,OnGestureListener{
+public class NewPage extends AppCompatActivity implements WeatherServiceCallback,OnGestureListener, LocationListener, GPSListener{
 
     private TextView temperatureTextView;
     private TextView conditionTextView;
@@ -36,10 +52,13 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
     private static final int SWIPE_VELOCITY_THRESHOLD = 100;
 
     private YahooWeatherService service;
+    private GPS geocodingService;
     private ProgressDialog dialog;
 
     public static SharedPreferences preferences;
+    private LocationManager locationManager;//for GPS
 
+    @TargetApi(23)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,11 +69,24 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
         conditionTextView = (TextView) findViewById(R.id.conditionTextView);
         locationTextView = (TextView) findViewById(R.id.locationTextView);
 
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        //checking location permission
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            }, 10);//set code to 10 which is used in onRequestPermissionResult
+            return;
+        }
+        else {
+            locationManager.requestLocationUpdates("gps", 30000, 1000, this); //every 30 seconds update or every 1000 meters
+        }
 
         SharedPreferences location_number = getSharedPreferences(getString(R.string.Location_Number), 0);
         SharedPreferences location_name = getSharedPreferences(getString(R.string.PREF_NAME), 0);
 
         service = new YahooWeatherService(this);
+        geocodingService= new GPS(this);
         dialog = new ProgressDialog(this);
         dialog.setMessage("Loading...");
         dialog.show();
@@ -125,7 +157,11 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
     public void serviceFailure(Exception exception) {
         dialog.hide();
         onServiceFailure();
-        Toast.makeText(this,"Current Weather Information could not be updated", Toast.LENGTH_LONG).show();
+        Toast weather = Toast.makeText(this,"Current Weather Information could not be updated", Toast.LENGTH_LONG);
+        //for centering toast text
+        TextView v = (TextView) weather.getView().findViewById(android.R.id.message);
+        v.setGravity(Gravity.CENTER);
+        weather.show();
     }
 
 
@@ -223,9 +259,16 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
 
     @Override
     public boolean onSupportNavigateUp() {
-        //This method is called when the up button is pressed. Just the pop back stack.
-        Intent intent= new Intent(this, MainActivity.class);
-        startActivity(intent);
+        //if gps is enabled during non gps pages go to corresponding gps pages
+        LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+        else{
+            Intent intent= new Intent(this,MainNonGPS.class);
+            startActivity(intent);
+        }
         return true;
     }
 
@@ -274,11 +317,27 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
                             //reset page location to 0
                             editor.putInt("location_number", 0);//put 0 in for page location
                             editor.apply();
-                            Intent intent = new Intent(NewPage.this, MainActivity.class);
-                            startActivity(intent);
+                            //if gps is enabled during non gps pages go to corresponding gps pages
+                            LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+                            if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                                Intent intent = new Intent(this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                            else{
+                                Intent intent= new Intent(this,MainNonGPS.class);
+                                startActivity(intent);
+                            }
                         } else {//go to new page activity
-                            Intent intent = new Intent(NewPage.this, NewPage.class);
-                            startActivity(intent);
+                            //if gps is enabled during non gps pages go to corresponding gps pages
+                            LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+                            if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                                Intent intent = new Intent(this, NewPage.class);
+                                startActivity(intent);
+                            }
+                            else{
+                                Intent intent= new Intent(this,NewPageNonGPS.class);
+                                startActivity(intent);
+                            }
                         }
                     } else {//swiped left
                         //used to access cache locations
@@ -290,8 +349,16 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
                             SharedPreferences.Editor editor = loc_number.edit();
                             editor.putInt("location_number", i);
                             editor.apply();
-                            Intent intent = new Intent(NewPage.this, NewPage.class);
-                            startActivity(intent);
+                            //if gps is enabled during non gps pages go to corresponding gps pages
+                            LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+                            if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                                Intent intent = new Intent(this, NewPage.class);
+                                startActivity(intent);
+                            }
+                            else{
+                                Intent intent= new Intent(this,NewPageNonGPS.class);
+                                startActivity(intent);
+                            }
                         }
                     }
                 }
@@ -302,4 +369,101 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
         }
         return result;
     }
+
+    //for GPS and implementation of Location Listener
+
+    //when gps location is changed
+    @Override
+    public void onLocationChanged(Location location) {
+        if(location != null) {
+            geocodingService.refreshLocation(location);
+        }
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    //when gps is enabled
+    @Override
+    public void onProviderEnabled(String provider) {
+    }
+    //when gps is disabled
+    @Override
+    public void onProviderDisabled(String provider) {
+    // Get Location Manager and check for GPS
+        LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            // Build the alert dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Location Services Not Active");
+            builder.setMessage("Please enable Your GPS");
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    // Show location settings when the user acknowledges the alert dialog
+                    Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                }
+            });
+            //if the user says no
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // Show location settings when the user acknowledges the alert dialog
+                            Intent intent = new Intent(getApplicationContext(), MainNonGPS.class);
+                            startActivity(intent);
+                        }
+                    }
+            );
+            Dialog alertDialog = builder.create();
+            alertDialog.setCanceledOnTouchOutside(false);
+            alertDialog.show();
+
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch(requestCode){
+            case 10:
+                if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    locationManager.requestLocationUpdates("gps",30000, 1000, this); //every 30 seconds update or every 1000 meters
+                }
+                return;
+        }
+    }
+    @Override
+    public void geocodeSuccess(LocationResult location) {
+        /*For testing GPS locations when they succeed
+        Toast gps_success = Toast.makeText(this,location.getAddress(), Toast.LENGTH_SHORT);
+        //for centering toast text
+        TextView v = (TextView) gps_success.getView().findViewById(android.R.id.message);
+        v.setGravity(Gravity.CENTER);
+        gps_success.show();
+        */
+
+        //Every successful time the gps location is saved
+        SharedPreferences gpslocation=getSharedPreferences(getString(R.string.GPS),0);
+
+        //get all prev temp values
+        String gps_location = location.getAddress();
+        //be able to edit shared preference values
+        SharedPreferences.Editor editor = gpslocation.edit();
+        //store new gps location to shared prefs
+        editor.putString("GPS_Location", gps_location);
+        //apply all changes
+        editor.apply();
+    }
+
+    @Override
+    public void geocodeFailure(Exception exception) {
+        // GeoCoding failed, try loading weather data from the cache
+        Toast gps_failure = Toast.makeText(this,"Current Weather Information could not be updated", Toast.LENGTH_SHORT);
+        //for centering toast text
+        TextView v = (TextView) gps_failure.getView().findViewById(android.R.id.message);
+        v.setGravity(Gravity.CENTER);
+        gps_failure.show();
+    }
+
 }

@@ -26,6 +26,7 @@ package com.example.kevin.TexasTechWeatherApp.fragments;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -34,8 +35,11 @@ import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
 import android.view.MenuItem;
 
+import com.example.kevin.TexasTechWeatherApp.MainNonGPS;
 import com.example.kevin.TexasTechWeatherApp.R;
 import com.example.kevin.TexasTechWeatherApp.MainActivity;
+
+import static android.content.Context.LOCATION_SERVICE;
 
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -53,8 +57,19 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 clearLocations();
-                Intent intent= new Intent(getActivity().getApplicationContext(),MainActivity.class);
-                startActivity(intent);
+                //get if gps is enabled by user and go to the corresponding main page
+                SharedPreferences gps_pref= getActivity().getApplicationContext().getSharedPreferences(getString(R.string.GPS_Enabled),0);
+                Boolean gps_enabled= gps_pref.getBoolean("GPS_Enabled",false);
+                //if gps is enabled during non gps pages go to corresponding gps pages
+                LocationManager lm = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+                if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                    Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                }
+                else{
+                    Intent intent= new Intent(getActivity().getApplicationContext(),MainNonGPS.class);
+                    startActivity(intent);
+                }
                 return true;
             }
         });
@@ -69,13 +84,6 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
         onSharedPreferenceChanged(null, null);
 
-        //not necessary at this moment but may use it to set geolocation for first time
-        if(!preferences.getBoolean(getString(R.string.pref_needs_setup), false)) {
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(getString(R.string.pref_needs_setup), false);
-            editor.apply();
-        }
-
         setHasOptionsMenu(true);
     }
 
@@ -83,12 +91,21 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     public void clearLocations(){
         SharedPreferences loc_number = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.Location_Number),0);
         SharedPreferences loc_name= getActivity().getApplicationContext().getSharedPreferences(getString(R.string.PREF_NAME),0);
+        SharedPreferences gps_loc= getActivity().getApplicationContext().getSharedPreferences("GPS_Location",0);
+
+        //clear location number
         SharedPreferences.Editor editor = loc_number.edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
+        //clear all saved pages
         SharedPreferences.Editor editor1 = loc_name.edit();
         editor1.clear();
-        editor1.commit();
+        editor1.apply();
+        //clear gps location
+        SharedPreferences.Editor editor2 = gps_loc.edit();
+        editor2.clear();
+        editor2.apply();
+
     }
 
     @Override
@@ -99,8 +116,16 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             SharedPreferences.Editor editor = pref.edit();
             editor.putInt("location_number",0);//reassign page location to 0
             editor.apply();
-            Intent intent=new Intent(getActivity().getApplicationContext(), MainActivity.class);
-            startActivity(intent);
+            //if gps is enabled during non gps pages go to corresponding gps pages
+            LocationManager lm = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+            if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+            else{
+                Intent intent= new Intent(getActivity().getApplicationContext(),MainNonGPS.class);
+                startActivity(intent);
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -109,6 +134,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         if (geolocationEnabledPreference.isChecked()) {
+
         } else {
         }
     }

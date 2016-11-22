@@ -4,6 +4,7 @@ package com.example.kevin.TexasTechWeatherApp.service;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.example.kevin.TexasTechWeatherApp.data.Channel;
 
@@ -38,7 +39,7 @@ public class YahooWeatherService {
 
         this.location = l;
 
-        new AsyncTask<String, Void, String>() {
+        new AsyncTask<String, String, String>() {
             @Override
             protected String doInBackground(String... strings) {
                 String YQL = String.format("select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\") and u='F'", strings[0]);
@@ -64,6 +65,7 @@ public class YahooWeatherService {
                 }
                 return null;
             }
+
 
             @Override
             protected void onPostExecute(String s) {

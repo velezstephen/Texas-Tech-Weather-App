@@ -9,6 +9,7 @@ package com.example.kevin.TexasTechWeatherApp;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -113,8 +114,16 @@ public class Settings extends PreferenceActivity {
         SharedPreferences.Editor editor = pref.edit();
         editor.putInt("location_number",0);//reassign page location to 0
         editor.apply();
-        Intent intent= new Intent(this,MainActivity.class);
-        startActivity(intent);
+        //if gps is enabled during non gps pages go to corresponding gps pages
+        LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+        else{
+            Intent intent= new Intent(this,MainNonGPS.class);
+            startActivity(intent);
+        }
     }
 
 

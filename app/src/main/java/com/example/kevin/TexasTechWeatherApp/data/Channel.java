@@ -1,5 +1,6 @@
 package com.example.kevin.TexasTechWeatherApp.data;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -26,5 +27,20 @@ public class Channel implements JSONPopulator {
 
         item = new Item();
         item.populate(data.optJSONObject("item"));
+    }
+
+    @Override
+    public JSONObject toJSON() {
+
+        JSONObject data = new JSONObject();
+
+        try {
+            data.put("units", units.toJSON());
+            data.put("item", item.toJSON());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return data;
     }
 }

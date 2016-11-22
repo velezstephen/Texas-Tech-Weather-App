@@ -2,6 +2,7 @@ package com.example.kevin.TexasTechWeatherApp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
@@ -47,8 +48,16 @@ public class Add_Location extends AppCompatActivity{
                     SharedPreferences.Editor editor1 = locations.edit();
                     editor1.putString("location_name"+i , str);
                     editor1.apply();
-                    Intent newintent =new Intent(Add_Location.this, NewPage.class);
-                    startActivity(newintent);
+                    //if gps is enabled during non gps pages go to corresponding gps pages
+                    LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+                    if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                        Intent intent = new Intent(Add_Location.this, NewPage.class);
+                        startActivity(intent);
+                    }
+                    else{
+                        Intent intent= new Intent(Add_Location.this,NewPageNonGPS.class);
+                        startActivity(intent);
+                    }
                 } else {
                     Toast.makeText(Add_Location.this, "Enter Your Location", Toast.LENGTH_SHORT).show();
                 }
@@ -67,8 +76,18 @@ public class Add_Location extends AppCompatActivity{
         SharedPreferences.Editor editor = loc_number.edit();
         editor.putInt("location_number", 0);//put 0 in for page location
         editor.apply();
-        Intent intent= new Intent(this,MainActivity.class);
+
+        //get if gps is enabled by user and go to the corresponding main page
+        SharedPreferences gps_pref= getSharedPreferences(getString(R.string.GPS_Enabled),0);
+        Boolean gps_enabled= gps_pref.getBoolean("GPS_Enabled",false);
+        if(gps_enabled){
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+        else{
+        Intent intent= new Intent(this,MainNonGPS.class);
         startActivity(intent);
+    }
     }
 
 }

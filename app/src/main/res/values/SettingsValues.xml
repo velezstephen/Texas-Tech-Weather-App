@@ -7,7 +7,7 @@
 
     <string name="pref_header_general">General</string>
     <string name="pref_title_enable_geolocation">Enable GeoLocation</string>
-    <string name="pref_description_enable_geolocation">Automatically obtain weather information based on my current location</string>
+    <string name="pref_description_enable_geolocation">Use your current geolocation position as your default page \n\nOnly used when GPS is enabled</string>
 
     <string name="pref_title_temperature_unit">Temperature Unit</string>
     <string-array name="pref_temperature_unit_titles">
