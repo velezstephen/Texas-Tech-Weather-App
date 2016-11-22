@@ -428,7 +428,11 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
         switch(requestCode){
             case 10:
                 if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    locationManager.requestLocationUpdates("gps",30000, 1000, this); //every 30 seconds update or every 1000 meters
+                    startActivity(getIntent());//refresh page for when user accepts
+                }
+                else{//go to nongps page
+                    Intent intent= new Intent(this,NewPageNonGPS.class);
+                    startActivity(intent);
                 }
                 return;
         }

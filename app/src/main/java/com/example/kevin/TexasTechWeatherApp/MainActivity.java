@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
 
         }
         else{
-            service.refreshWeather("Lubock, TX");
+            service.refreshWeather("Lubbock, TX");
             //need to set default data
         }
     }
@@ -428,8 +428,6 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
         switch(requestCode){
             case 10:
             if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {//permission granted
-                //initialize gps
-                locationManager.requestLocationUpdates("gps",30000, 1000, this); //every 30 seconds update or 1000 meters update
                 startActivity(getIntent());//refresh page for when user accepts
             }
                 else{//go to non gps main page
