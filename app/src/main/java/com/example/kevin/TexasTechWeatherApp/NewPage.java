@@ -2,8 +2,10 @@ package com.example.kevin.TexasTechWeatherApp;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,8 +36,11 @@ import com.example.kevin.TexasTechWeatherApp.data.Item;
 import com.example.kevin.TexasTechWeatherApp.data.LocationResult;
 import com.example.kevin.TexasTechWeatherApp.service.GPS;
 import com.example.kevin.TexasTechWeatherApp.service.GPSListener;
+import com.example.kevin.TexasTechWeatherApp.service.Notify;
 import com.example.kevin.TexasTechWeatherApp.service.WeatherServiceCallback;
 import com.example.kevin.TexasTechWeatherApp.service.YahooWeatherService;
+
+import java.util.Calendar;
 
 /**
  * Created by Stephen on 11/12/2016.
@@ -57,6 +62,7 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
 
     public static SharedPreferences preferences;
     private LocationManager locationManager;//for GPS
+    public Boolean notificationSet=false;
 
     @TargetApi(23)
     @Override
@@ -113,6 +119,9 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
             case R.id.settings:
                 Intent intent1= new Intent(this,Settings.class);
                 startActivity(intent1);
+                return true;
+            case R.id.notifications:
+                startNotification();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -468,6 +477,34 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
         TextView v = (TextView) gps_failure.getView().findViewById(android.R.id.message);
         v.setGravity(Gravity.CENTER);
         gps_failure.show();
+    }
+
+    public void startNotification() {
+        SharedPreferences oldlocation=getSharedPreferences(getString(R.string.Location_Number),0);
+        int i=oldlocation.getInt("location_number",0);
+        preferences=getSharedPreferences(getString(R.string.Notification_Enabled),0);
+        notificationSet=preferences.getBoolean("Notification_Enabled",false);
+        SharedPreferences.Editor editor= preferences.edit();
+
+        if(!notificationSet) {//set notification
+            Toast.makeText(this, "Notification Started", Toast.LENGTH_SHORT).show();
+            Calendar calendar = Calendar.getInstance();
+            Intent intentAlarm = new Intent(NewPage.this, Notify.class);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            PendingIntent result = PendingIntent.getBroadcast(NewPage.this, 0, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), 60000, result);//every minute update notification
+            editor.putBoolean("Notification_Enabled",true);//update notification enabling
+            editor.apply();
+        }
+        else{//cancel
+            Toast.makeText(this, "Notification Cancelled", Toast.LENGTH_SHORT).show();
+            Intent intentAlarm = new Intent(NewPage.this, Notify.class);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            PendingIntent result = PendingIntent.getBroadcast(NewPage.this, 0, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmManager.cancel(result);//every minute update notification
+            editor.putBoolean("Notification_Enabled",false);//update notification enabling
+            editor.apply();
+        }
     }
 
 }

@@ -20,4 +20,5 @@
     </string-array>
 
     <string name="cache">clear_cache</string>
+    <string name="notifications">notifications</string>
 </resources>

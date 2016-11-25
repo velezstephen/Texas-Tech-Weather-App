@@ -15,7 +15,8 @@
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
         android:title="@string/pref_title_temperature_unit" />
-        <Preference
+
+    <Preference
         android:title="Clear Cache"
         android:key="@string/cache"
         android:summary="This will clear all your saved locations"/>

@@ -60,6 +60,7 @@
             android:parentActivityName=".MainNonGPS"
             >
         </activity>
+        <receiver android:name=".service.Notify"/>
     </application>
 
 </manifest>

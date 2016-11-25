@@ -12,4 +12,5 @@
     <string name="Prev_Condition">Prev_Condition</string>
     <string name="GPS">GPS_Location</string>
     <string name="GPS_Enabled">GPS_Enabled</string>
+    <string name="Notification_Enabled">Notification_Enabled</string>
 </resources>

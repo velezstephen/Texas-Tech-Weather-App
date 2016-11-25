@@ -2,8 +2,11 @@ package com.example.kevin.TexasTechWeatherApp;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,9 +37,11 @@ import com.example.kevin.TexasTechWeatherApp.data.Item;
 import com .example.kevin.TexasTechWeatherApp.data.LocationResult;
 import com.example.kevin.TexasTechWeatherApp.service.GPSListener;
 import com.example.kevin.TexasTechWeatherApp.service.GPS;
+import com.example.kevin.TexasTechWeatherApp.service.Notify;
 import com.example.kevin.TexasTechWeatherApp.service.WeatherServiceCallback;
 import com.example.kevin.TexasTechWeatherApp.service.YahooWeatherService;
 
+import java.util.Calendar;
 
 
 public class MainActivity extends AppCompatActivity implements WeatherServiceCallback, OnGestureListener, LocationListener,GPSListener {
@@ -50,10 +55,12 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
 
     public static SharedPreferences preferences;
     private LocationManager locationManager;//for GPS
+    public NotificationManager notificationManager;//for notification
 
     private YahooWeatherService service;
     private GPS geocodingService;
     private ProgressDialog dialog;
+    public Boolean notificationSet=false;
 
     @TargetApi(23)
     @Override
@@ -61,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(R.mipmap.ttu_icon);
+        getSupportActionBar().setIcon(R.mipmap.ttu_icon1);
         detector = new GestureDetector(this, this);
         temperatureTextView = (TextView) findViewById(R.id.temperatureTextView);
         conditionTextView = (TextView) findViewById(R.id.conditionTextView);
@@ -81,29 +88,16 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
             locationManager.requestLocationUpdates("gps", 30000, 1000, this);//every 30 seconds update or every 1000 meters difference from last location
         }
 
-
         //for getting yahoo weather information and setting up a loading alert dialog
         service = new YahooWeatherService(this);
         dialog = new ProgressDialog(this);
         dialog.setMessage("Loading...");
         dialog.show();
 
-        preferences =PreferenceManager.getDefaultSharedPreferences(this);
-        Boolean gps_enabled_pref = preferences.getBoolean("geolocation_enabled",false);
+        //function to check if gps default page is enabled
+        gpsLocationCheck();
 
-        if (gps_enabled_pref){
-            preferences=getSharedPreferences(getString(R.string.GPS),0);
-            String gps_loc=preferences.getString("GPS_Location","Austin, TX");//default Austin, TX
-            service.refreshWeather(gps_loc);//pass Austin as default for both
-            //need to set default data
-
-        }
-        else{
-            service.refreshWeather("Lubbock, TX");
-            //need to set default data
-        }
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -120,6 +114,9 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
             case R.id.settings:
                 Intent intent1= new Intent(this,Settings.class);
                 startActivity(intent1);
+                return true;
+            case R.id.notifications:
+                startNotification();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -147,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
 
         //for getting temperature unit string value
         preferences= PreferenceManager.getDefaultSharedPreferences(this);
-        String preftemp= preferences.getString("temperature_unit","Null");
+        String preftemp= preferences.getString("temperature_unit","F");
         //for getting which image to set and where
         RelativeLayout image= (RelativeLayout)findViewById(R.id.activity_main);
         image.setBackgroundResource(backimageId);//default image
@@ -161,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
         }
 
         else{
-        temperatureTextView.setText(temperature + "\u00B0" + channel.getUnits().getTemperature());
+        temperatureTextView.setText(temperature + "\u00B0" + channel.getUnits().getTemperature());//same as preftemp
         }
         conditionTextView.setText(item.getCondition().getDescription());
         locationTextView.setText(service.getLocation());
@@ -472,6 +469,51 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
         gps_failure.show();
     }
 
+    public void gpsLocationCheck(){
+        preferences =PreferenceManager.getDefaultSharedPreferences(this);
+        Boolean gps_enabled_pref = preferences.getBoolean("geolocation_enabled",false);
+
+        if (gps_enabled_pref){
+            //for getting previous default gps value
+            preferences=getSharedPreferences(getString(R.string.GPS),0);
+            String gps_loc=preferences.getString("GPS_Location","Austin, TX");//default Austin, TX
+            service.refreshWeather(gps_loc);//pass Austin as default for both
+            //need to set default data
+
+        }
+        else{
+            service.refreshWeather("Lubbock, TX");
+            //need to set default data
+        }
+
+    }
 
 
+    public void startNotification() {
+        SharedPreferences oldlocation=getSharedPreferences(getString(R.string.Location_Number),0);
+        int i=oldlocation.getInt("location_number",0);
+        preferences=getSharedPreferences(getString(R.string.Notification_Enabled),0);
+        notificationSet=preferences.getBoolean("Notification_Enabled",false);
+        SharedPreferences.Editor editor= preferences.edit();
+
+        if(!notificationSet) {//set notification
+            Toast.makeText(this, "Notification Started", Toast.LENGTH_SHORT).show();
+            Calendar calendar = Calendar.getInstance();
+            Intent intentAlarm = new Intent(MainActivity.this, Notify.class);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            PendingIntent result = PendingIntent.getBroadcast(MainActivity.this, 0, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT);//use unique id for each
+            alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), 60000, result);//every minute update notification
+            editor.putBoolean("Notification_Enabled",true);//update notification enabling
+            editor.apply();
+        }
+        else{//cancel
+            Toast.makeText(this, "Notification Cancelled", Toast.LENGTH_SHORT).show();
+            Intent intentAlarm = new Intent(MainActivity.this, Notify.class);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            PendingIntent result = PendingIntent.getBroadcast(MainActivity.this, 0, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmManager.cancel(result);//every minute update notification
+            editor.putBoolean("Notification_Enabled",false);//update notification enabling
+            editor.apply();
+        }
+    }
 }

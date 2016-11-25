@@ -46,7 +46,8 @@
         android:fontFamily="monospace"
         android:layout_marginTop="16dp"
         android:layout_below="@+id/locationTextView"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"/>
 
     <TextView
         android:layout_width="wrap_content"
