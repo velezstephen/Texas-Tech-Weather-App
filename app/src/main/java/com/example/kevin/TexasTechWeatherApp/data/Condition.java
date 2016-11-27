@@ -30,19 +30,4 @@ public class Condition implements JSONPopulator {
         temperature = data.optInt("temp");
         description = data.optString("text");
     }
-
-    @Override
-    public JSONObject toJSON() {
-        JSONObject data = new JSONObject();
-
-        try {
-            data.put("code", code);
-            data.put("temp", temperature);
-            data.put("text", description);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return data;
-    }
 }

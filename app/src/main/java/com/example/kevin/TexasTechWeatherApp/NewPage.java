@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.example.kevin.TexasTechWeatherApp.data.Channel;
 import com.example.kevin.TexasTechWeatherApp.data.Condition;
+import com.example.kevin.TexasTechWeatherApp.data.Forecast;
 import com.example.kevin.TexasTechWeatherApp.data.Item;
 import com.example.kevin.TexasTechWeatherApp.data.LocationResult;
 import com.example.kevin.TexasTechWeatherApp.service.GPS;
@@ -159,6 +160,7 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
         }
         conditionTextView.setText(item.getCondition().getDescription());
         locationTextView.setText(service.getLocation());
+        saveWeekForecast(channel);
         saveTemp(channel);
     }
 
@@ -250,6 +252,140 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
 
     }
 
+    public void saveWeekForecast(Channel channel){
+        Forecast def=channel.getItem().getForecast();
+
+        //for getting temperature unit string value
+        preferences= PreferenceManager.getDefaultSharedPreferences(this);
+        String preftemp= preferences.getString("temperature_unit","Null");
+
+        //get all preferences for old highs and lows]
+        SharedPreferences high1=getSharedPreferences(getString(R.string.High1),0);
+        SharedPreferences high2=getSharedPreferences(getString(R.string.High2),0);
+        SharedPreferences high3=getSharedPreferences(getString(R.string.High3),0);
+        SharedPreferences high4=getSharedPreferences(getString(R.string.High4),0);
+        SharedPreferences high5=getSharedPreferences(getString(R.string.High5),0);
+        SharedPreferences high6=getSharedPreferences(getString(R.string.High6),0);
+        SharedPreferences high7=getSharedPreferences(getString(R.string.High7),0);
+
+        SharedPreferences low1=getSharedPreferences(getString(R.string.Low1),0);
+        SharedPreferences low2=getSharedPreferences(getString(R.string.Low2),0);
+        SharedPreferences low3=getSharedPreferences(getString(R.string.Low3),0);
+        SharedPreferences low4=getSharedPreferences(getString(R.string.Low4),0);
+        SharedPreferences low5=getSharedPreferences(getString(R.string.Low5),0);
+        SharedPreferences low6=getSharedPreferences(getString(R.string.Low6),0);
+        SharedPreferences low7=getSharedPreferences(getString(R.string.Low7),0);
+        SharedPreferences oldlocation=getSharedPreferences(getString(R.string.Location_Number),0);
+        int i=oldlocation.getInt("location_number",0);
+
+        //be able to edit shared preference values
+        SharedPreferences.Editor ed1= high1.edit();
+        SharedPreferences.Editor ed2 = high2.edit();
+        SharedPreferences.Editor ed3 = high3.edit();
+        //be able to edit shared preference values
+        SharedPreferences.Editor ed4 = high4.edit();
+        SharedPreferences.Editor ed5 = high5.edit();
+        SharedPreferences.Editor ed6 = high6.edit();
+        //be able to edit shared preference values
+        SharedPreferences.Editor ed7 = high7.edit();
+        SharedPreferences.Editor ed8 = low1.edit();
+        SharedPreferences.Editor ed9 = low2.edit();
+        //be able to edit shared preference values
+        SharedPreferences.Editor ed10 = low3.edit();
+        SharedPreferences.Editor ed11 = low4.edit();
+        SharedPreferences.Editor ed12 = low5.edit();
+        //be able to edit shared preference values
+        SharedPreferences.Editor ed13 = low6.edit();
+        SharedPreferences.Editor ed14 = low7.edit();
+
+        //initate all days
+        String day1;
+        String day2;
+        String day3;
+        String day4;
+        String day5;
+        String day6;
+        String day7;
+
+        day1 = "Date: " + def.getDate() + "\n" + "Day: " + def.getDay() + "\nCondition: " + def.getDescription() + "\n";
+        day2 = "Date: " + def.getDate2() + "\n" + "Day: " + def.getDay2() + "\nCondition: " + def.getDescription2() + "\n";
+        day3 = "Date: " + def.getDate3() + "\n" + "Day: " + def.getDay3() + "\nCondition: " + def.getDescription3() + "\n";
+        day4 = "Date: " + def.getDate4() + "\n" + "Day: " + def.getDay4() + "\nCondition: " + def.getDescription4() + "\n";
+        day5 = "Date: " + def.getDate5() + "\n" + "Day: " + def.getDay5() + "\nCondition: " + def.getDescription5() + "\n";
+        day6 = "Date: " + def.getDate6() + "\n" + "Day: " + def.getDay6() + "\nCondition: " + def.getDescription6() + "\n";
+        day7 = "Date: " + def.getDate7() + "\n" + "Day: " + def.getDay7() + "\nCondition: " + def.getDescription7() + "\n";
+
+
+        //store all previous highs and lows for on service failure when accessing forecast page
+        ed1.putInt("High1"+i,def.getHigh());
+        ed2.putInt("High2"+i,def.getHigh2());
+        ed3.putInt("High3"+i,def.getHigh3());
+        ed4.putInt("High4"+i,def.getHigh4());
+        ed5.putInt("High5"+i,def.getHigh5());
+        ed6.putInt("High6"+i,def.getHigh6());
+        ed7.putInt("High7"+i,def.getHigh7());
+        ed8.putInt("Low1"+i,def.getLow());
+        ed9.putInt("Low2"+i,def.getLow2());
+        ed10.putInt("Low3"+i,def.getLow3());
+        ed11.putInt("Low4"+i,def.getLow4());
+        ed12.putInt("Low5"+i,def.getLow5());
+        ed13.putInt("Low6"+i,def.getLow6());
+        ed14.putInt("Low7"+i,def.getLow7());
+
+        //apply all stored highs and lows
+        ed1.apply();
+        ed2.apply();
+        ed3.apply();
+        ed4.apply();
+        ed5.apply();
+        ed6.apply();
+        ed7.apply();
+        ed8.apply();
+        ed9.apply();
+        ed10.apply();
+        ed11.apply();
+        ed12.apply();
+        ed13.apply();
+        ed14.apply();
+
+
+        //get places for storage
+        SharedPreferences pref=getSharedPreferences(getString(R.string.Forecast_Day1),0);
+        SharedPreferences pref1=getSharedPreferences(getString(R.string.Forecast_Day2),0);
+        SharedPreferences pref2=getSharedPreferences(getString(R.string.Forecast_Day3),0);
+        SharedPreferences pref3=getSharedPreferences(getString(R.string.Forecast_Day4),0);
+        SharedPreferences pref4=getSharedPreferences(getString(R.string.Forecast_Day5),0);
+        SharedPreferences pref5=getSharedPreferences(getString(R.string.Forecast_Day6),0);
+        SharedPreferences pref6=getSharedPreferences(getString(R.string.Forecast_Day7),0);
+
+        //get editors
+        SharedPreferences.Editor editor= pref.edit();
+        SharedPreferences.Editor editor1= pref1.edit();
+        SharedPreferences.Editor editor2= pref2.edit();
+        SharedPreferences.Editor editor3= pref3.edit();
+        SharedPreferences.Editor editor4= pref4.edit();
+        SharedPreferences.Editor editor5= pref5.edit();
+        SharedPreferences.Editor editor6= pref6.edit();
+
+        //set all values
+        editor.putString("Forecast_Day1"+i,day1);
+        editor1.putString("Forecast_Day2"+i,day2);
+        editor2.putString("Forecast_Day3"+i,day3);
+        editor3.putString("Forecast_Day4"+i,day4);
+        editor4.putString("Forecast_Day5"+i,day5);
+        editor5.putString("Forecast_Day6"+i,day6);
+        editor6.putString("Forecast_Day7"+i,day7);
+
+        //apply all values
+        editor.apply();
+        editor1.apply();
+        editor2.apply();
+        editor3.apply();
+        editor4.apply();
+        editor5.apply();
+        editor6.apply();
+    }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -268,13 +404,20 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
 
     @Override
     public boolean onSupportNavigateUp() {
+        //reset i to 0
+        SharedPreferences oldlocation=getSharedPreferences(getString(R.string.Location_Number),0);
+        SharedPreferences.Editor editor= oldlocation.edit();
         //if gps is enabled during non gps pages go to corresponding gps pages
         LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            editor.putInt("location_number",0);//reset to location number to 0
+            editor.apply();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
         else{
+            editor.putInt("location_number",0);//reset to location number to 0
+            editor.apply();
             Intent intent= new Intent(this,MainNonGPS.class);
             startActivity(intent);
         }
@@ -372,7 +515,17 @@ public class NewPage extends AppCompatActivity implements WeatherServiceCallback
                     }
                 }
                 result = true;
-            } else result = true;
+            }  else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD){
+                //swiped down refresh page
+                if(diffY>0){
+                    startActivity(getIntent());//refresh page
+
+                }
+                else{//swiped up go to forecast
+                    Intent intent = new Intent(NewPage.this, ForecastPage.class);//go to forecast page on swipe down
+                    startActivity(intent);
+                }
+            } result = true;
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -13,4 +13,29 @@
     <string name="GPS">GPS_Location</string>
     <string name="GPS_Enabled">GPS_Enabled</string>
     <string name="Notification_Enabled">Notification_Enabled</string>
+
+    <string name="Forecast_Day1">Forecast_Day1</string>
+    <string name="Forecast_Day2">Forecast_Day2</string>
+    <string name="Forecast_Day3">Forecast_Day3</string>
+    <string name="Forecast_Day4">Forecast_Day4</string>
+    <string name="Forecast_Day5">Forecast_Day5</string>
+    <string name="Forecast_Day6">Forecast_Day6</string>
+    <string name="Forecast_Day7">Forecast_Day7</string>
+
+    <string name="High1">High1</string>
+    <string name="High2">High2</string>
+    <string name="High3">High3</string>
+    <string name="High4">High4</string>
+    <string name="High5">High5</string>
+    <string name="High6">High6</string>
+    <string name="High7">High7</string>
+
+    <string name="Low1">Low1</string>
+    <string name="Low2">Low2</string>
+    <string name="Low3">Low3</string>
+    <string name="Low4">Low4</string>
+    <string name="Low5">Low5</string>
+    <string name="Low6">Low6</string>
+    <string name="Low7">Low7</string>
+
 </resources>

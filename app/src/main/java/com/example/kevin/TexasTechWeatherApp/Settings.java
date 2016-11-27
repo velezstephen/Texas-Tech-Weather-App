@@ -101,7 +101,7 @@ public class Settings extends PreferenceActivity {
     private AppCompatDelegate getDelegate() {
         if (delegate == null) {
             delegate = AppCompatDelegate.create(this, null);
-            setTitle("Settings");
+            setTitle("Settings");//set name
         }
         return delegate;
     }
@@ -111,18 +111,27 @@ public class Settings extends PreferenceActivity {
     public void onBackPressed()
     {
         SharedPreferences pref=getSharedPreferences(getString(R.string.Location_Number),0);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putInt("location_number",0);//reassign page location to 0
-        editor.apply();
-        //if gps is enabled during non gps pages go to corresponding gps pages
-        LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+        int i= pref.getInt("location_number",0);
+        LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);//to check gps
+
+        if(i==0) {//if on home page go back to home page
+            //if gps is enabled during non gps pages go to corresponding gps pages
+            if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(this, MainNonGPS.class);
+                startActivity(intent);
+            }
         }
-        else{
-            Intent intent= new Intent(this,MainNonGPS.class);
-            startActivity(intent);
+        else{//go to new page
+            if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                Intent intent = new Intent(this, NewPage.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(this, NewPageNonGPS.class);
+                startActivity(intent);
+            }
         }
     }
 

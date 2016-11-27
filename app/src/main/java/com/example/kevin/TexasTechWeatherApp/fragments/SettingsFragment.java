@@ -91,7 +91,15 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     public void clearLocations(){
         SharedPreferences loc_number = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.Location_Number),0);
         SharedPreferences loc_name= getActivity().getApplicationContext().getSharedPreferences(getString(R.string.PREF_NAME),0);
-        SharedPreferences gps_loc= getActivity().getApplicationContext().getSharedPreferences("GPS_Location",0);
+        SharedPreferences gps_loc= getActivity().getApplicationContext().getSharedPreferences(getString(R.string.GPS),0);
+        //get all forecast info
+        SharedPreferences forecast1=getActivity().getApplicationContext().getSharedPreferences(getString(R.string.Forecast_Day1),0);
+        SharedPreferences forecast2=getActivity().getApplicationContext().getSharedPreferences(getString(R.string.Forecast_Day2),0);
+        SharedPreferences forecast3=getActivity().getApplicationContext().getSharedPreferences(getString(R.string.Forecast_Day3),0);
+        SharedPreferences forecast4=getActivity().getApplicationContext().getSharedPreferences(getString(R.string.Forecast_Day4),0);
+        SharedPreferences forecast5=getActivity().getApplicationContext().getSharedPreferences(getString(R.string.Forecast_Day5),0);
+        SharedPreferences forecast6=getActivity().getApplicationContext().getSharedPreferences(getString(R.string.Forecast_Day6),0);
+        SharedPreferences forecast7=getActivity().getApplicationContext().getSharedPreferences(getString(R.string.Forecast_Day7),0);
 
         //clear location number
         SharedPreferences.Editor editor = loc_number.edit();
@@ -105,6 +113,42 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         SharedPreferences.Editor editor2 = gps_loc.edit();
         editor2.clear();
         editor2.apply();
+
+        //clears all forecast information for all locations
+        //clear all forecast1 information
+        SharedPreferences.Editor editor3 = forecast1.edit();
+        editor3.clear();
+        editor3.apply();
+        //clear all forecast2 information
+        SharedPreferences.Editor editor4 = forecast2.edit();
+        editor4.clear();
+        editor4.apply();
+
+        //clear all forecast3 information
+        SharedPreferences.Editor editor5 = forecast3.edit();
+        editor5.clear();
+        editor5.apply();
+
+        //clear all forecast4 information
+        SharedPreferences.Editor editor6 = forecast4.edit();
+        editor6.clear();
+        editor6.apply();
+
+        //clear all forecast5 information
+        SharedPreferences.Editor editor7 = forecast5.edit();
+        editor7.clear();
+        editor7.apply();
+
+        //clear all forecast6 information
+        SharedPreferences.Editor editor8 = forecast6.edit();
+        editor8.clear();
+        editor8.apply();
+
+        //clear all forecast7 information
+        SharedPreferences.Editor editor9 = forecast7.edit();
+        editor9.clear();
+        editor9.apply();
+
 
     }
 

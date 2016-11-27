@@ -60,6 +60,10 @@
             android:parentActivityName=".MainNonGPS"
             >
         </activity>
+        <activity android:name=".ForecastPage"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"/>
+
         <receiver android:name=".service.Notify"/>
     </application>
 
