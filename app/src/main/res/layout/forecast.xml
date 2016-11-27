@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ForecastPage"
+    android:id="@+id/forecast_page"
+>
+
+    <ImageView
+        android:src="@drawable/yahoo_logo"
+        android:layout_width="50dp"
+        android:layout_height="20dp"
+        android:id="@+id/YahooIconImage"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+    />
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/forecastView"
+        android:layout_marginTop="19dp"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:textAlignment="center"/>
+</ScrollView>
+
+</RelativeLayout>
