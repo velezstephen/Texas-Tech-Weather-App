@@ -29,7 +29,8 @@
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:stretchColumns="0,1,2">
+            android:stretchColumns="0,1,2"
+            android:background="#40000000">
 
             <TextView android:text="@string/forecast"
                 android:layout_width="wrap_content"
@@ -297,7 +298,8 @@
           <TableLayout
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:stretchColumns="0,1,2">
+              android:stretchColumns="0,1,2"
+              android:background="#40000000">
 
               <TextView android:text="@string/Details"
                   android:layout_width="wrap_content"
