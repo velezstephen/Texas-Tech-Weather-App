@@ -163,6 +163,7 @@ public class MainNonGPS extends AppCompatActivity implements WeatherServiceCallb
         conditionTextView.setText(item.getCondition().getDescription());
         locationTextView.setText(service.getLocation());
         saveWeekForecast(channel);
+        saveDetails(channel);
         saveTemp(channel);
     }
 
@@ -395,7 +396,6 @@ public class MainNonGPS extends AppCompatActivity implements WeatherServiceCallb
             editor.apply();
         }
     }
-
     public void saveWeekForecast(Channel channel){
         Forecast def=channel.getItem().getForecast();
 
@@ -451,13 +451,31 @@ public class MainNonGPS extends AppCompatActivity implements WeatherServiceCallb
         String day6;
         String day7;
 
-        day1 = "Date: " + def.getDate() + "\n" + "Day: " + def.getDay() + "\nCondition: " + def.getDescription() + "\n";
-        day2 = "Date: " + def.getDate2() + "\n" + "Day: " + def.getDay2() + "\nCondition: " + def.getDescription2() + "\n";
-        day3 = "Date: " + def.getDate3() + "\n" + "Day: " + def.getDay3() + "\nCondition: " + def.getDescription3() + "\n";
-        day4 = "Date: " + def.getDate4() + "\n" + "Day: " + def.getDay4() + "\nCondition: " + def.getDescription4() + "\n";
-        day5 = "Date: " + def.getDate5() + "\n" + "Day: " + def.getDay5() + "\nCondition: " + def.getDescription5() + "\n";
-        day6 = "Date: " + def.getDate6() + "\n" + "Day: " + def.getDay6() + "\nCondition: " + def.getDescription6() + "\n";
-        day7 = "Date: " + def.getDate7() + "\n" + "Day: " + def.getDay7() + "\nCondition: " + def.getDescription7() + "\n";
+        //initiate all day conditions
+        String daycond1;
+        String daycond2;
+        String daycond3;
+        String daycond4;
+        String daycond5;
+        String daycond6;
+        String daycond7;
+
+
+        day1 = def.getDay();
+        day2 = def.getDay2();
+        day3 = def.getDay3();
+        day4 = def.getDay4();
+        day5 = def.getDay5();
+        day6 = def.getDay6();
+        day7 = def.getDay7();
+
+        daycond1=def.getDescription();
+        daycond2=def.getDescription2();
+        daycond3=def.getDescription3();
+        daycond4=def.getDescription4();
+        daycond5=def.getDescription5();
+        daycond6=def.getDescription6();
+        daycond7=def.getDescription7();
 
 
         //store all previous highs and lows for on service failure when accessing forecast page
@@ -502,6 +520,15 @@ public class MainNonGPS extends AppCompatActivity implements WeatherServiceCallb
         SharedPreferences pref5=getSharedPreferences(getString(R.string.Forecast_Day6),0);
         SharedPreferences pref6=getSharedPreferences(getString(R.string.Forecast_Day7),0);
 
+        //get places for all conditions
+        SharedPreferences pref7=getSharedPreferences(getString(R.string.Condition1),0);
+        SharedPreferences pref8=getSharedPreferences(getString(R.string.Condition2),0);
+        SharedPreferences pref9=getSharedPreferences(getString(R.string.Condition3),0);
+        SharedPreferences pref10=getSharedPreferences(getString(R.string.Condition4),0);
+        SharedPreferences pref11=getSharedPreferences(getString(R.string.Condition5),0);
+        SharedPreferences pref12=getSharedPreferences(getString(R.string.Condition6),0);
+        SharedPreferences pref13=getSharedPreferences(getString(R.string.Condition7),0);
+
         //get editors
         SharedPreferences.Editor editor= pref.edit();
         SharedPreferences.Editor editor1= pref1.edit();
@@ -510,7 +537,13 @@ public class MainNonGPS extends AppCompatActivity implements WeatherServiceCallb
         SharedPreferences.Editor editor4= pref4.edit();
         SharedPreferences.Editor editor5= pref5.edit();
         SharedPreferences.Editor editor6= pref6.edit();
-
+        SharedPreferences.Editor editor7= pref7.edit();
+        SharedPreferences.Editor editor8= pref8.edit();
+        SharedPreferences.Editor editor9= pref9.edit();
+        SharedPreferences.Editor editor10= pref10.edit();
+        SharedPreferences.Editor editor11= pref11.edit();
+        SharedPreferences.Editor editor12= pref12.edit();
+        SharedPreferences.Editor editor13= pref13.edit();
         //set all values
         editor.putString("Forecast_Day1"+i,day1);
         editor1.putString("Forecast_Day2"+i,day2);
@@ -520,6 +553,15 @@ public class MainNonGPS extends AppCompatActivity implements WeatherServiceCallb
         editor5.putString("Forecast_Day6"+i,day6);
         editor6.putString("Forecast_Day7"+i,day7);
 
+        //set all conditions
+        editor7.putString("Condition1"+i,daycond1);
+        editor8.putString("Condition2"+i,daycond2);
+        editor9.putString("Condition3"+i,daycond3);
+        editor10.putString("Condition4"+i,daycond4);
+        editor11.putString("Condition5"+i,daycond5);
+        editor12.putString("Condition6"+i,daycond6);
+        editor13.putString("Condition7"+i,daycond7);
+
         //apply all values
         editor.apply();
         editor1.apply();
@@ -528,6 +570,51 @@ public class MainNonGPS extends AppCompatActivity implements WeatherServiceCallb
         editor4.apply();
         editor5.apply();
         editor6.apply();
+
+        editor7.apply();
+        editor8.apply();
+        editor9.apply();
+        editor10.apply();
+        editor11.apply();
+        editor12.apply();
+        editor13.apply();
+    }
+
+    public void saveDetails(Channel channel){
+        //get all preferences for all forecast details
+        SharedPreferences windchill=getSharedPreferences(getString(R.string.WindChill),0);
+        SharedPreferences windspeed=getSharedPreferences(getString(R.string.WindSpeed),0);
+        SharedPreferences visibility=getSharedPreferences(getString(R.string.Visibility),0);
+        SharedPreferences humidity=getSharedPreferences(getString(R.string.Humidity),0);
+        SharedPreferences sunrise=getSharedPreferences(getString(R.string.Sunrise),0);
+        SharedPreferences sunset=getSharedPreferences(getString(R.string.Sunset),0);
+        SharedPreferences oldlocation=getSharedPreferences(getString(R.string.Location_Number),0);
+        int i=oldlocation.getInt("location_number",0);
+
+        //be able to edit shared preference values
+        SharedPreferences.Editor ed1= windchill.edit();
+        SharedPreferences.Editor ed2 = windspeed.edit();
+        SharedPreferences.Editor ed3 = visibility.edit();
+        //be able to edit shared preference values
+        SharedPreferences.Editor ed4 = humidity.edit();
+        SharedPreferences.Editor ed5 = sunrise.edit();
+        SharedPreferences.Editor ed6 = sunset.edit();
+
+        ed1.putInt("windchill"+i,channel.getWind().getWindchill());
+        ed2.putInt("windspeed"+i,channel.getWind().getWindspeed());
+        ed3.putInt("visibility"+i,channel.getAtmosphere().getVisibility());
+        ed4.putInt("humidity"+i,channel.getAtmosphere().getHumidity());
+        ed5.putString("sunrise"+i,channel.getAstronomy().getSunrise());
+        ed6.putString("sunset"+i,channel.getAstronomy().getSunset());
+
+        ed1.apply();
+        ed2.apply();
+        ed3.apply();
+        ed4.apply();
+        ed5.apply();
+        ed6.apply();
+
+
     }
 
 }

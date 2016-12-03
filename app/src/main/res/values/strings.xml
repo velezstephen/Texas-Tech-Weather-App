@@ -38,4 +38,28 @@
     <string name="Low6">Low6</string>
     <string name="Low7">Low7</string>
 
+    <string name="Condition1">Condition1</string>
+    <string name="Condition2">Condition2</string>
+    <string name="Condition3">Condition3</string>
+    <string name="Condition4">Condition4</string>
+    <string name="Condition5">Condition5</string>
+    <string name="Condition6">Condition6</string>
+    <string name="Condition7">Condition7</string>
+
+    <string name="forecast">7 Day Forecast</string>
+    <string name="Details">Details</string>
+    <string name="Details_1">Feels Like</string>
+    <string name="Details_2">Wind Speed</string>
+    <string name="Details_3">Humidity</string>
+    <string name="Details_4">Visibility</string>
+    <string name="Details_5">Sunrise</string>
+    <string name="Details_6">Sunset</string>
+
+    <string name="WindSpeed">WindSpeed</string>
+    <string name="WindChill">WindChill</string>
+    <string name="Humidity">Humidity</string>
+    <string name="Visibility">Visibility</string>
+    <string name="Sunrise">Sunrise</string>
+    <string name="Sunset">Sunset</string>
+
 </resources>

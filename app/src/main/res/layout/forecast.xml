@@ -15,20 +15,461 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
     />
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:text=""
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/forecastView"
-        android:layout_marginTop="19dp"
-        android:layout_gravity="center_horizontal"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        android:textSize="25sp"
-        android:textAlignment="center"/>
-</ScrollView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="vertical">
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="0,1,2">
+
+            <TextView android:text="@string/forecast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="40sp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="sans-serif-condensed" />
+
+        <TableRow android:layout_height="wrap_content" android:layout_width="match_parent">
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forecastDay1"
+                android:layout_gravity="start"
+                android:layout_marginTop="19dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textAlignment="center"
+                android:layout_weight="1" />
+
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forecastDayCond1"
+                android:layout_marginTop="19dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textAlignment="center"
+                android:layout_weight="2"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forecastDayTemp1"
+                android:layout_marginTop="19dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textAlignment="center"
+                android:layout_gravity="end"
+                android:layout_weight="3" />
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="match_parent">
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forecastDay2"
+                android:layout_gravity="start"
+                android:layout_marginTop="19dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textAlignment="center"/>
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forecastDayCond2"
+                android:layout_marginTop="19dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_gravity="center_horizontal" />
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forecastDayTemp2"
+                android:layout_gravity="end"
+                android:layout_marginTop="19dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textAlignment="center"/>
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="match_parent">
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forecastDay3"
+                android:layout_gravity="start"
+                android:layout_marginTop="19dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textAlignment="center"/>
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forecastDayCond3"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="19dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textAlignment="center"/>
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forecastDayTemp3"
+                android:layout_gravity="end"
+                android:layout_marginTop="19dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textAlignment="center"/>
+        </TableRow>
+
+        <TableRow android:layout_height="wrap_content" android:layout_width="match_parent">
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forecastDay4"
+                android:layout_gravity="start"
+                android:layout_marginTop="19dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textAlignment="center"/>
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forecastDayCond4"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="19dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textAlignment="center"/>
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forecastDayTemp4"
+                android:layout_gravity="end"
+                android:layout_marginTop="19dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textAlignment="center"/>
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="match_parent">
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forecastDay5"
+                android:layout_gravity="start"
+                android:layout_marginTop="19dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textAlignment="center"/>
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forecastDayCond5"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="19dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textAlignment="center"/>
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forecastDayTemp5"
+                android:layout_gravity="end"
+                android:layout_marginTop="19dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textAlignment="center"/>
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="match_parent">
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forecastDay6"
+                android:layout_gravity="start"
+                android:layout_marginTop="19dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textAlignment="center"/>
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forecastDayCond6"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="19dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textAlignment="center"/>
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forecastDayTemp6"
+                android:layout_gravity="end"
+                android:layout_marginTop="19dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textAlignment="center"/>
+        </TableRow>
+
+        <TableRow android:layout_height="wrap_content" android:layout_width="match_parent">
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forecastDay7"
+                android:layout_gravity="start"
+                android:layout_marginTop="19dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textAlignment="center"/>
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forecastDayCond7"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="19dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textAlignment="center"/>
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forecastDayTemp7"
+                android:layout_gravity="end"
+                android:layout_marginTop="19dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textAlignment="center"/>
+        </TableRow>
+        </TableLayout>
+
+          <TableLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:stretchColumns="0,1,2">
+
+              <TextView android:text="@string/Details"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textAlignment="center"
+                  android:textColor="#FFFFFF"
+                  android:textStyle="bold"
+                  android:textSize="40sp"
+                  android:layout_marginBottom="20dp"
+                  android:fontFamily="sans-serif-condensed" />
+
+              <TableRow
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent" >
+                  <TextView
+                      android:text="@string/Details_1"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="start"
+                      android:layout_marginTop="19dp"
+                      android:textColor="#FFFFFF"
+                      android:textStyle="bold"
+                      android:textSize="18sp"
+                      android:textAlignment="center"/>
+                  <TextView
+                      android:text=""
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/windchill"
+                      android:layout_gravity="end"
+                      android:layout_marginTop="19dp"
+                      android:textColor="#FFFFFF"
+                      android:textStyle="bold"
+                      android:textSize="18sp"
+                      android:textAlignment="center"/>
+
+              </TableRow>
+
+              <TableRow
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent" >
+                  <TextView
+                      android:text="@string/Details_2"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="start"
+                      android:layout_marginTop="19dp"
+                      android:textColor="#FFFFFF"
+                      android:textStyle="bold"
+                      android:textSize="18sp"
+                      android:textAlignment="center"/>
+                  <TextView
+                      android:text=""
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/windspeed"
+                      android:layout_gravity="end"
+                      android:layout_marginTop="19dp"
+                      android:textColor="#FFFFFF"
+                      android:textStyle="bold"
+                      android:textSize="18sp"
+                      android:textAlignment="center"/>
+
+              </TableRow>
+
+              <TableRow
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent" >
+                  <TextView
+                      android:text="@string/Details_3"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="start"
+                      android:layout_marginTop="19dp"
+                      android:textColor="#FFFFFF"
+                      android:textStyle="bold"
+                      android:textSize="18sp"
+                      android:textAlignment="center"/>
+                  <TextView
+                      android:text=""
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/humidity"
+                      android:layout_gravity="end"
+                      android:layout_marginTop="19dp"
+                      android:textColor="#FFFFFF"
+                      android:textStyle="bold"
+                      android:textSize="18sp"
+                      android:textAlignment="center"/>
+              </TableRow>
+
+
+              <TableRow
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent" >
+                  <TextView
+                      android:text="@string/Details_4"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="start"
+                      android:layout_marginTop="19dp"
+                      android:textColor="#FFFFFF"
+                      android:textStyle="bold"
+                      android:textSize="18sp"
+                      android:textAlignment="center"/>
+                  <TextView
+                      android:text=""
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/visibility"
+                      android:layout_gravity="end"
+                      android:layout_marginTop="19dp"
+                      android:textColor="#FFFFFF"
+                      android:textStyle="bold"
+                      android:textSize="18sp"
+                      android:textAlignment="center"/>
+              </TableRow>
+
+              <TableRow
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent" >
+                  <TextView
+                      android:text="@string/Details_5"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="start"
+                      android:layout_marginTop="19dp"
+                      android:textColor="#FFFFFF"
+                      android:textStyle="bold"
+                      android:textSize="18sp"
+                      android:textAlignment="center"/>
+                  <TextView
+                      android:text=""
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/sunrise"
+                      android:layout_gravity="end"
+                      android:layout_marginTop="19dp"
+                      android:textColor="#FFFFFF"
+                      android:textStyle="bold"
+                      android:textSize="18sp"
+                      android:textAlignment="center"/>
+              </TableRow>
+
+              <TableRow
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent" >
+                  <TextView
+                      android:text="@string/Details_6"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="start"
+                      android:layout_marginTop="19dp"
+                      android:textColor="#FFFFFF"
+                      android:textStyle="bold"
+                      android:textSize="18sp"
+                      android:textAlignment="center"/>
+                  <TextView
+                      android:text=""
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/sunset"
+                      android:layout_gravity="end"
+                      android:layout_marginTop="19dp"
+                      android:textColor="#FFFFFF"
+                      android:textStyle="bold"
+                      android:textSize="18sp"
+                      android:textAlignment="center"/>
+              </TableRow>
+          </TableLayout>
+
+      </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

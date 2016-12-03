@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import com.example.kevin.TexasTechWeatherApp.service.Notify;
 
+import org.w3c.dom.Text;
+
 import java.util.Calendar;
 
 
@@ -28,7 +30,42 @@ import java.util.Calendar;
  */
 
 public class ForecastPage extends AppCompatActivity implements OnGestureListener, LocationListener{
-    private TextView forecast;
+    private TextView forecast1;
+    private TextView forecast2;
+    private TextView forecast3;
+    private TextView forecast4;
+    private TextView forecast5;
+    private TextView forecast6;
+    private TextView forecast7;
+    private TextView forecastcond1;
+    private TextView forecastcond2;
+    private TextView forecastcond3;
+    private TextView forecastcond4;
+    private TextView forecastcond5;
+    private TextView forecastcond6;
+    private TextView forecastcond7;
+    private TextView forecasttemp1;
+    private TextView forecasttemp2;
+    private TextView forecasttemp3;
+    private TextView forecasttemp4;
+    private TextView forecasttemp5;
+    private TextView forecasttemp6;
+    private TextView forecasttemp7;
+
+    //for all weather details
+    //wc is windchill
+    //ws is windspeed
+    //visib is visibility
+    //hum is humidity
+    //ss is sunset
+    //sr is sunrise
+    private TextView wc;
+    private TextView hum;
+    private TextView visib;
+    private TextView ws;
+    private TextView ss;
+    private TextView sr;
+
     private static final int SWIPE_THRESHOLD = 100;
     private static final int SWIPE_VELOCITY_THRESHOLD = 100;
     public static SharedPreferences preferences;
@@ -41,8 +78,39 @@ public class ForecastPage extends AppCompatActivity implements OnGestureListener
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ttu_icon1);
 
-        //get all textview places
-        forecast=(TextView)findViewById(R.id.forecastView);
+        //get all textview places for forecast days
+        forecast1=(TextView)findViewById(R.id.forecastDay1);
+        forecast2=(TextView)findViewById(R.id.forecastDay2);
+        forecast3=(TextView)findViewById(R.id.forecastDay3);
+        forecast4=(TextView)findViewById(R.id.forecastDay4);
+        forecast5=(TextView)findViewById(R.id.forecastDay5);
+        forecast6=(TextView)findViewById(R.id.forecastDay6);
+        forecast7=(TextView)findViewById(R.id.forecastDay7);
+        //for all forecast condition views
+        forecastcond1=(TextView)findViewById(R.id.forecastDayCond1);
+        forecastcond2=(TextView)findViewById(R.id.forecastDayCond2);
+        forecastcond3=(TextView)findViewById(R.id.forecastDayCond3);
+        forecastcond4=(TextView)findViewById(R.id.forecastDayCond4);
+        forecastcond5=(TextView)findViewById(R.id.forecastDayCond5);
+        forecastcond6=(TextView)findViewById(R.id.forecastDayCond6);
+        forecastcond7=(TextView)findViewById(R.id.forecastDayCond7);
+
+        //for all forecast temperature views
+        forecasttemp1=(TextView)findViewById(R.id.forecastDayTemp1);
+        forecasttemp2=(TextView)findViewById(R.id.forecastDayTemp2);
+        forecasttemp3=(TextView)findViewById(R.id.forecastDayTemp3);
+        forecasttemp4=(TextView)findViewById(R.id.forecastDayTemp4);
+        forecasttemp5=(TextView)findViewById(R.id.forecastDayTemp5);
+        forecasttemp6=(TextView)findViewById(R.id.forecastDayTemp6);
+        forecasttemp7=(TextView)findViewById(R.id.forecastDayTemp7);
+
+        //get forecast detail views
+        wc= (TextView)findViewById(R.id.windchill);
+        ws=(TextView)findViewById(R.id.windspeed);
+        visib= (TextView)findViewById(R.id.visibility);
+        hum= (TextView)findViewById(R.id.humidity);
+        sr=(TextView)findViewById(R.id.sunrise);
+        ss=(TextView)findViewById(R.id.sunset);
 
         //get and show forecast data
         getForecast();
@@ -83,8 +151,23 @@ public class ForecastPage extends AppCompatActivity implements OnGestureListener
         SharedPreferences pref4=getSharedPreferences(getString(R.string.Forecast_Day5),0);
         SharedPreferences pref5=getSharedPreferences(getString(R.string.Forecast_Day6),0);
         SharedPreferences pref6=getSharedPreferences(getString(R.string.Forecast_Day7),0);
+        SharedPreferences pref7=getSharedPreferences(getString(R.string.Condition1),0);
+        SharedPreferences pref8=getSharedPreferences(getString(R.string.Condition2),0);
+        SharedPreferences pref9=getSharedPreferences(getString(R.string.Condition3),0);
+        SharedPreferences pref10=getSharedPreferences(getString(R.string.Condition4),0);
+        SharedPreferences pref11=getSharedPreferences(getString(R.string.Condition5),0);
+        SharedPreferences pref12=getSharedPreferences(getString(R.string.Condition6),0);
+        SharedPreferences pref13=getSharedPreferences(getString(R.string.Condition7),0);
         SharedPreferences oldlocation=getSharedPreferences(getString(R.string.Location_Number),0);
-        SharedPreferences pref7=getSharedPreferences(getString(R.string.Prev_Code),0);
+        SharedPreferences pref14=getSharedPreferences(getString(R.string.Prev_Code),0);
+
+        //get all preferences for all forecast details
+        SharedPreferences windchill=getSharedPreferences(getString(R.string.WindChill),0);
+        SharedPreferences windspeed=getSharedPreferences(getString(R.string.WindSpeed),0);
+        SharedPreferences visibility=getSharedPreferences(getString(R.string.Visibility),0);
+        SharedPreferences humidity=getSharedPreferences(getString(R.string.Humidity),0);
+        SharedPreferences sunrise=getSharedPreferences(getString(R.string.Sunrise),0);
+        SharedPreferences sunset=getSharedPreferences(getString(R.string.Sunset),0);
 
         //get all preferences for old highs and lows]
         SharedPreferences high1=getSharedPreferences(getString(R.string.High1),0);
@@ -104,14 +187,56 @@ public class ForecastPage extends AppCompatActivity implements OnGestureListener
         SharedPreferences low7=getSharedPreferences(getString(R.string.Low7),0);
 
         int i=oldlocation.getInt("location_number",0);
-        int prev_code=pref7.getInt("Prev_Code"+i,0);
-        String day1=pref.getString("Forecast_Day1"+i,"Unknown\n");
-        String day2=pref1.getString("Forecast_Day2"+i,"Unknown\n");
-        String day3=pref2.getString("Forecast_Day3"+i,"Unknown\n");
-        String day4=pref3.getString("Forecast_Day4"+i,"Unknown\n");
-        String day5=pref4.getString("Forecast_Day5"+i,"Unknown\n");
-        String day6=pref5.getString("Forecast_Day6"+i,"Unknown\n");
-        String day7=pref6.getString("Forecast_Day7"+i,"Unknown\n");
+        int prev_code=pref14.getInt("Prev_Code"+i,0);
+        String day1=pref.getString("Forecast_Day1"+i,"Unknown");
+        String day2=pref1.getString("Forecast_Day2"+i,"Unknown");
+        String day3=pref2.getString("Forecast_Day3"+i,"Unknown");
+        String day4=pref3.getString("Forecast_Day4"+i,"Unknown");
+        String day5=pref4.getString("Forecast_Day5"+i,"Unknown");
+        String day6=pref5.getString("Forecast_Day6"+i,"Unknown");
+        String day7=pref6.getString("Forecast_Day7"+i,"Unknown");
+
+        String daycond1=pref7.getString("Condition1"+i,"Unknown");
+        String daycond2=pref8.getString("Condition2"+i,"Unknown");
+        String daycond3=pref9.getString("Condition3"+i,"Unknown");
+        String daycond4=pref10.getString("Condition4"+i,"Unknown");
+        String daycond5=pref11.getString("Condition5"+i,"Unknown");
+        String daycond6=pref12.getString("Condition6"+i,"Unknown");
+        String daycond7=pref13.getString("Condition7"+i,"Unknown");
+
+        //assign all page location weather details
+        int speed=windspeed.getInt("windspeed"+i,0);
+        int chill=windchill.getInt("windchill"+i,0);
+        int humid=humidity.getInt("humidity"+i,0);
+        int vis=visibility.getInt("visibility"+i,0);
+        String sun_rise=sunrise.getString("sunrise"+i,"Unknown");
+        String sun_set=sunset.getString("sunset"+i,"Unknown");
+
+        //set all forecast days
+        forecast1.setText(day1);
+        forecast2.setText(day2);
+        forecast3.setText(day3);
+        forecast4.setText(day4);
+        forecast5.setText(day5);
+        forecast6.setText(day6);
+        forecast7.setText(day7);
+
+        //set all forecast conditions
+        forecastcond1.setText(daycond1);
+        forecastcond2.setText(daycond2);
+        forecastcond3.setText(daycond3);
+        forecastcond4.setText(daycond4);
+        forecastcond5.setText(daycond5);
+        forecastcond6.setText(daycond6);
+        forecastcond7.setText(daycond7);
+
+        //for all weather details
+       ws.setText(speed+" mph");
+       hum.setText(humid+ " %");
+       visib.setText(vis+ " mi");
+       sr.setText(sun_rise);
+       ss.setText(sun_set);
+
 
         int h1=high1.getInt("High1"+i,0);
         int h2=high2.getInt("High2"+i,0);
@@ -132,27 +257,30 @@ public class ForecastPage extends AppCompatActivity implements OnGestureListener
         preferences= PreferenceManager.getDefaultSharedPreferences(this);
         String preftemp= preferences.getString("temperature_unit","Null");
         if(preftemp.equals("C")){//convert all highs and lows to celsius
+
             //all week forecast weather with celsius highs and lows
-            day1=day1+"High: "+FarenheitToCelsius(h1)+ "\u00B0" + "C\n"+"Low: "+ FarenheitToCelsius(l1)+ "\u00B0" + "C"+"\n\n\n";
-            day2=day2+"High: "+FarenheitToCelsius(h2)+ "\u00B0" + "C\n"+"Low: "+ FarenheitToCelsius(l2)+ "\u00B0" + "C"+"\n\n\n";
-            day3=day3+"High: "+FarenheitToCelsius(h3)+ "\u00B0" + "C\n"+"Low: "+ FarenheitToCelsius(l3)+ "\u00B0" + "C"+"\n\n\n";
-            day4=day4+"High: "+FarenheitToCelsius(h4)+ "\u00B0" + "C\n"+"Low: "+ FarenheitToCelsius(l4)+ "\u00B0" + "C"+"\n\n\n";
-            day5=day5+"High: "+FarenheitToCelsius(h5)+ "\u00B0" + "C\n"+"Low: "+ FarenheitToCelsius(l5)+ "\u00B0" + "C"+"\n\n\n";
-            day6=day6+"High: "+FarenheitToCelsius(h6)+ "\u00B0" + "C\n"+"Low: "+ FarenheitToCelsius(l6)+ "\u00B0" + "C"+"\n\n\n";
-            day7=day7+"High: "+FarenheitToCelsius(h7)+ "\u00B0" + "C\n"+"Low: "+ FarenheitToCelsius(l7)+ "\u00B0" + "C"+"\n\n\n\n\n";
+            day1=FarenheitToCelsius(h1)+ "\u00B0" + "\t "+FarenheitToCelsius(l1)+ "\u00B0" ;
+            day2=FarenheitToCelsius(h2)+ "\u00B0" + "\t "+FarenheitToCelsius(l2)+ "\u00B0" ;
+            day3=FarenheitToCelsius(h3)+ "\u00B0" + "\t "+FarenheitToCelsius(l3)+ "\u00B0" ;
+            day4=FarenheitToCelsius(h4)+ "\u00B0" + "\t "+FarenheitToCelsius(l4)+ "\u00B0" ;
+            day5=FarenheitToCelsius(h5)+ "\u00B0" + "\t "+FarenheitToCelsius(l5)+ "\u00B0" ;
+            day6=FarenheitToCelsius(h6)+ "\u00B0" + "\t "+FarenheitToCelsius(l6)+ "\u00B0" ;
+            day7=FarenheitToCelsius(h7)+ "\u00B0" + "\t "+FarenheitToCelsius(l7)+ "\u00B0" ;
+            chill=FarenheitToCelsius(chill);
 
         }
         else{//all week forecast weather with farenheit highs and lows
-            day1=day1+"High: "+h1+ "\u00B0" + "F\n"+"Low: "+ l1+ "\u00B0" + "F"+"\n\n\n";
-            day2=day2+"High: "+h2+ "\u00B0" + "F\n"+"Low: "+ l2+ "\u00B0" + "F"+"\n\n\n";
-            day3=day3+"High: "+h3+ "\u00B0" + "F\n"+"Low: "+ l3+ "\u00B0" + "F"+"\n\n\n";
-            day4=day4+"High: "+h4+ "\u00B0" + "F\n"+"Low: "+ l4+ "\u00B0" + "F"+"\n\n\n";
-            day5=day5+"High: "+h5+ "\u00B0" + "F\n"+"Low: "+ l5+ "\u00B0" + "F"+"\n\n\n";
-            day6=day6+"High: "+h6+ "\u00B0" + "F\n"+"Low: "+ l6+ "\u00B0" + "F"+"\n\n\n";
-            day7=day7+"High: "+h7+ "\u00B0" + "F\n"+"Low: "+ l7+ "\u00B0" + "F"+"\n\n\n\n\n";
+            day1=h1+ "\u00B0" + "\t "+l1+ "\u00B0" ;
+            day2=h2+ "\u00B0" + "\t "+l2+ "\u00B0" ;
+            day3=h3+ "\u00B0" + "\t "+l3+ "\u00B0" ;
+            day4=h4+ "\u00B0" + "\t "+l4+ "\u00B0" ;
+            day5=h5+ "\u00B0" + "\t "+l5+ "\u00B0" ;
+            day6=h6+ "\u00B0" + "\t "+l6+ "\u00B0" ;
+            day7=h7+ "\u00B0" + "\t "+l7+ "\u00B0" ;
         }
 
-
+        //set wind chill text
+        wc.setText(chill+"\u00B0");
 
         //For checking if using gps location on default page
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -178,7 +306,14 @@ public class ForecastPage extends AppCompatActivity implements OnGestureListener
         image.setBackgroundResource(backimageId);//default image
 
 
-        forecast.setText(day1+day2+day3+day4+day5+day6+day7);
+        forecasttemp1.setText(day1);
+        forecasttemp2.setText(day2);
+        forecasttemp3.setText(day3);
+        forecasttemp4.setText(day4);
+        forecasttemp5.setText(day5);
+        forecasttemp6.setText(day6);
+        forecasttemp7.setText(day7);
+
     }
 
     public void startNotification() {
