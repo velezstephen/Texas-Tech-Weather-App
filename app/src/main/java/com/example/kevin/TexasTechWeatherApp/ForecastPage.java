@@ -259,24 +259,24 @@ public class ForecastPage extends AppCompatActivity implements OnGestureListener
         if(preftemp.equals("C")){//convert all highs and lows to celsius
 
             //all week forecast weather with celsius highs and lows
-            day1=FarenheitToCelsius(h1)+ "\u00B0" + "\t\t"+FarenheitToCelsius(l1)+ "\u00B0" ;
-            day2=FarenheitToCelsius(h2)+ "\u00B0" + "\t\t"+FarenheitToCelsius(l2)+ "\u00B0" ;
-            day3=FarenheitToCelsius(h3)+ "\u00B0" + "\t\t"+FarenheitToCelsius(l3)+ "\u00B0" ;
-            day4=FarenheitToCelsius(h4)+ "\u00B0" + "\t\t"+FarenheitToCelsius(l4)+ "\u00B0" ;
-            day5=FarenheitToCelsius(h5)+ "\u00B0" + "\t\t"+FarenheitToCelsius(l5)+ "\u00B0" ;
-            day6=FarenheitToCelsius(h6)+ "\u00B0" + "\t\t"+FarenheitToCelsius(l6)+ "\u00B0" ;
-            day7=FarenheitToCelsius(h7)+ "\u00B0" + "\t\t"+FarenheitToCelsius(l7)+ "\u00B0" ;
+            day1=FarenheitToCelsius(h1)+ "\u00B0" + "    "+FarenheitToCelsius(l1)+ "\u00B0" ;
+            day2=FarenheitToCelsius(h2)+ "\u00B0" + "    "+FarenheitToCelsius(l2)+ "\u00B0" ;
+            day3=FarenheitToCelsius(h3)+ "\u00B0" + "    "+FarenheitToCelsius(l3)+ "\u00B0" ;
+            day4=FarenheitToCelsius(h4)+ "\u00B0" + "    "+FarenheitToCelsius(l4)+ "\u00B0" ;
+            day5=FarenheitToCelsius(h5)+ "\u00B0" + "    "+FarenheitToCelsius(l5)+ "\u00B0" ;
+            day6=FarenheitToCelsius(h6)+ "\u00B0" + "    "+FarenheitToCelsius(l6)+ "\u00B0" ;
+            day7=FarenheitToCelsius(h7)+ "\u00B0" + "    "+FarenheitToCelsius(l7)+ "\u00B0" ;
             chill=FarenheitToCelsius(chill);//windchill is also adjusted to celsius
 
         }
         else{//all week forecast weather with farenheit highs and lows
-            day1=h1+ "\u00B0" + "\t\t"+l1+ "\u00B0" ;
-            day2=h2+ "\u00B0" + "\t\t"+l2+ "\u00B0" ;
-            day3=h3+ "\u00B0" + "\t\t"+l3+ "\u00B0" ;
-            day4=h4+ "\u00B0" + "\t\t"+l4+ "\u00B0" ;
-            day5=h5+ "\u00B0" + "\t\t"+l5+ "\u00B0" ;
-            day6=h6+ "\u00B0" + "\t\t"+l6+ "\u00B0" ;
-            day7=h7+ "\u00B0" + "\t\t"+l7+ "\u00B0" ;
+            day1=h1+ "\u00B0" + "    "+l1+ "\u00B0" ;
+            day2=h2+ "\u00B0" + "    "+l2+ "\u00B0" ;
+            day3=h3+ "\u00B0" + "    "+l3+ "\u00B0" ;
+            day4=h4+ "\u00B0" + "    "+l4+ "\u00B0" ;
+            day5=h5+ "\u00B0" + "    "+l5+ "\u00B0" ;
+            day6=h6+ "\u00B0" + "    "+l6+ "\u00B0" ;
+            day7=h7+ "\u00B0" + "    "+l7+ "\u00B0" ;
         }
 
         //set wind chill text
