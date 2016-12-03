@@ -19,49 +19,42 @@ public class Forecast{
     JSONObject dataday7;
     
     //for day 1
-    private String date;
     private String day;
     private int high;
     private int low;
     private String description;
 
     //for day 2
-    private String date2;
     private String day2;
     private int high2;
     private int low2;
     private String description2;
 
     //for day 3
-    private String date3;
     private String day3;
     private int high3;
     private int low3;
     private String description3;
 
     //for day 4
-    private String date4;
     private String day4;
     private int high4;
     private int low4;
     private String description4;
 
     //for day 5
-    private String date5;
     private String day5;
     private int high5;
     private int low5;
     private String description5;
 
     //for day 6
-    private String date6;
     private String day6;
     private int high6;
     private int low6;
     private String description6;
 
     //for day 7
-    private String date7;
     private String day7;
     private int high7;
     private int low7;
@@ -69,9 +62,6 @@ public class Forecast{
 
     //all the getters for all nformation on each day
 
-    public String getDate() {
-        return date;
-    }
     public String getDay(){
         return day;
     }
@@ -88,9 +78,6 @@ public class Forecast{
         return description;
     }
 
-    public String getDate2() {
-        return date2;
-    }
 
     public String getDay2() {
         return day2;
@@ -108,9 +95,6 @@ public class Forecast{
         return description2;
     }
 
-    public String getDate3() {
-        return date3;
-    }
 
     public String getDay3() {
         return day3;
@@ -128,9 +112,6 @@ public class Forecast{
         return description3;
     }
 
-    public String getDate4() {
-        return date4;
-    }
 
     public String getDay4() {
         return day4;
@@ -148,9 +129,6 @@ public class Forecast{
         return description4;
     }
 
-    public String getDate5() {
-        return date5;
-    }
 
     public String getDay5() {
         return day5;
@@ -168,9 +146,6 @@ public class Forecast{
         return description5;
     }
 
-    public String getDate6() {
-        return date6;
-    }
 
     public String getDay6() {
         return day6;
@@ -188,9 +163,6 @@ public class Forecast{
         return description6;
     }
 
-    public String getDate7() {
-        return date7;
-    }
 
     public String getDay7() {
         return day7;
@@ -210,7 +182,6 @@ public class Forecast{
 
     public void populate(JSONArray data) {
         dataday1=data.optJSONObject(0);//get first element in array
-        date=dataday1.optString("date");
         day=dataday1.optString("day");
         high=dataday1.optInt("high");
         low=dataday1.optInt("low");
@@ -218,7 +189,6 @@ public class Forecast{
         
         //day 2
         dataday2=data.optJSONObject(1);//get first element in array
-        date2=dataday2.optString("date");
         day2=dataday2.optString("day");
         high2=dataday2.optInt("high");
         low2=dataday2.optInt("low");
@@ -226,7 +196,6 @@ public class Forecast{
         
         //day 3
         dataday3=data.optJSONObject(2);//get first element in array
-        date3=dataday3.optString("date");
         day3=dataday3.optString("day");
         high3=dataday3.optInt("high");
         low3=dataday3.optInt("low");
@@ -234,7 +203,6 @@ public class Forecast{
         
         //day 4
         dataday4=data.optJSONObject(3);//get first element in array
-        date4=dataday4.optString("date");
         day4=dataday4.optString("day");
         high4=dataday4.optInt("high");
         low4=dataday4.optInt("low");
@@ -242,7 +210,6 @@ public class Forecast{
         
         //day  5
         dataday5=data.optJSONObject(4);//get first element in array
-        date5=dataday5.optString("date");
         day5=dataday5.optString("day");
         high5=dataday5.optInt("high");
         low5=dataday5.optInt("low");
@@ -250,7 +217,6 @@ public class Forecast{
         
         //day 6
         dataday6=data.optJSONObject(5);//get first element in array
-        date6=dataday6.optString("date");
         day6=dataday6.optString("day");
         high6=dataday6.optInt("high");
         low6=dataday6.optInt("low");
@@ -258,7 +224,6 @@ public class Forecast{
         
         //day 7
         dataday7=data.optJSONObject(6);//get first element in array
-        date7=dataday7.optString("date");
         day7=dataday7.optString("day");
         high7=dataday7.optInt("high");
         low7=dataday7.optInt("low");
