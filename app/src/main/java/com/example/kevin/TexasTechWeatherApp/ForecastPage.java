@@ -232,7 +232,7 @@ public class ForecastPage extends AppCompatActivity implements OnGestureListener
 
         //for all weather details
        ws.setText(speed+" mph");
-       hum.setText(humid+ " %");
+       hum.setText(humid+ "%");
        visib.setText(vis+ " mi");
        sr.setText(sun_rise);
        ss.setText(sun_set);
